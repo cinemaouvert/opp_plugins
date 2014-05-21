@@ -63,7 +63,7 @@ public:
       *
       * @author Thibaud Lamarche <lamarchethibaud@hotmail.fr>
       */
-    QFile extract(QString filepath, int mode, int id);
+    void extract(QString filepath, int mode, int id,QString outputName = "");
 
 private :
     /**

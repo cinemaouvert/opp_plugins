@@ -59,6 +59,8 @@ void AdvancedSettingsWindow::getInfo(QString path)
 
     parceTracks(outList);
     parceAttach(outList);
+
+    extract(path,0,2);
 }
 
 void AdvancedSettingsWindow::parceTracks(const QStringList &outList)
@@ -145,8 +147,15 @@ void AdvancedSettingsWindow::on_buttonBox_OKCancel_rejected()
     this->hide();
 }
 
-QFile AdvancedSettingsWindow::extract(QString filepath, int mode, int id){
-    QString modeStr = ((mode = 0) ? QString("attachments") : QString("tracks"));
+void AdvancedSettingsWindow::extract(QString filepath, int mode, int id,QString outputName){
+    QString modeStr = ((mode == 0) ? QString("attachments") : QString("tracks"));
     QProcess* process = new QProcess();
-    process->start("mkvextract " + modeStr + " "+filepath+" "+QString::number(id));
+    QStringList args;
+    if(outputName != "")
+        args<<modeStr<<filepath<<QString::number(id)+":"+outputName;
+    else
+        args<<modeStr<<filepath<<QString::number(id);
+
+    process->start("mkvextract",args);
+    process->waitForFinished(-1);
 }
