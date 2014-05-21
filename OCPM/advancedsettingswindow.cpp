@@ -43,7 +43,9 @@ AdvancedSettingsWindow::~AdvancedSettingsWindow()
 
 void AdvancedSettingsWindow::getInfo(QString path)
 {
-    QString currFile = path;
+    int i = path.lastIndexOf('/');
+    QString title = tr("File : ") + path.right(path.length()-i-1);
+    ui->treeWidget_information->setHeaderLabel(title);
 
     QStringList args;
     args<<"--ui-language"<<"fr_FR"<<path;
@@ -52,7 +54,7 @@ void AdvancedSettingsWindow::getInfo(QString path)
     proc.start("mkvinfo",args);
     proc.waitForFinished(-1);
 
-    QString output = proc.readAllStandardOutput();
+    QString output = QString::fromUtf8(proc.readAllStandardOutput());
     QStringList outList = output.split("\n");
 
     parceTracks(outList);
@@ -68,41 +70,29 @@ void AdvancedSettingsWindow::parceTracks(const QStringList &outList)
         QStringList* list = new QStringList();
         list->append(tr("Track ") + QString::number(nb));
         QTreeWidgetItem* track = new QTreeWidgetItem(*list);
-        //int nbEspaces = 2;
+
         i++;
-        //QStringList* param = new QStringList();
+
         QString tempStr;
         while (outList.at(i).contains(QRegExp("\\|\\ \\ \\+\\ .*")) || outList.at(i).contains(QRegExp("\\|\\ \\ \\ \\+\\ .*")) ) {
             tempStr = outList.at(i);
 
-            QTreeWidgetItem* param;
-
-            if(outList.at(i).contains(QRegExp("\\|\\ \\ \\+\\ .*"))) {
+            if(outList.at(i).contains(QRegExp("\\|\\ \\ \\+\\ .*")))
                 tempStr = tempStr.remove("|  + ");
-                QStringList* l = new QStringList();
-                l->append(tempStr);
-                QTreeWidgetItem* param = new QTreeWidgetItem(*l);
-                track->addChild(param);
-            }
-            /*else if(outList.at(i).contains(QRegExp("\\|\\ \\ \\ \\+\\ .*"))) {
+            else if(outList.at(i).contains(QRegExp("\\|\\ \\ \\ \\+\\ .*")))
                 tempStr = tempStr.remove("|   + ");
-                QStringList* l = new QStringList();
-                l->append(tempStr);
-                QTreeWidgetItem* subParam = new QTreeWidgetItem(*l);
-                param->addChild(subParam);
-                //nbEspaces = 3;
-            }*/
+
+            QStringList* l = new QStringList();
+            l->append(tempStr);
+            QTreeWidgetItem* param = new QTreeWidgetItem(*l);
+            track->addChild(param);
+
             i++;
         }
-
-
         ui->treeWidget_information->addTopLevelItem(track);
         nb++;
 
         i--;
-
-
-
         }
     }
 }
@@ -110,32 +100,36 @@ void AdvancedSettingsWindow::parceTracks(const QStringList &outList)
 void AdvancedSettingsWindow::parceAttach(const QStringList &outList)
 {
 
-
+    int nb =1;
     for (int i = 0; i < outList.count(); ++i) {
-        if (outList.at(i).contains("| + Joints")) {
+    if (outList.at(i).contains("| + Joints")) {
+
+        QStringList* list = new QStringList();
+        list->append(tr("Attachment ") + QString::number(nb));
+        QTreeWidgetItem* track = new QTreeWidgetItem(*list);
+
+        i++;
+
+        QString tempStr;
+        while (outList.at(i).contains(QRegExp("\\|\\ \\ \\+\\ .*")) || outList.at(i).contains(QRegExp("\\|\\ \\ \\ \\+\\ .*")) ) {
+            tempStr = outList.at(i);
+
+            if(outList.at(i).contains(QRegExp("\\|\\ \\ \\+\\ .*")))
+                tempStr = tempStr.remove("|  + ");
+            else if(outList.at(i).contains(QRegExp("\\|\\ \\ \\ \\+\\ .*")))
+                tempStr = tempStr.remove("|   + ");
+
+            QStringList* l = new QStringList();
+            l->append(tempStr);
+            QTreeWidgetItem* param = new QTreeWidgetItem(*l);
+            track->addChild(param);
 
             i++;
-            QString tempStr, name = "", type = "", taille = "", desc = "";
-            while (outList.at(i).contains(QRegExp("\\|\\ \\ \\+\\ .*"))) {
-                tempStr = outList.at(i);
-                if (outList.at(i).contains("Nom du fichier :")) {
-                    name.append(tempStr.remove("|  + Nom du fichier : "));
-                }
-                else if (outList.at(i).contains("Type MIME :")) {
-                    type = "Type : ";
-                    type.append(tempStr.remove("|  + Type MIME : "));
-                }
-                else if (outList.at(i).contains("Données du fichier, taille :")) {
-                    taille = tr("Size : ");
-                    taille.append(tempStr.remove("|  + Données du fichier, taille : "));
-                }
-                else if (outList.at(i).contains("Description du fichier :")) {
-                    desc = tempStr.remove("|   + Description du fichier : ");
-                }
-                i++;
-            }
-            i--;
+        }
+        ui->treeWidget_information->addTopLevelItem(track);
+        nb++;
 
+        i--;
         }
     }
 }
