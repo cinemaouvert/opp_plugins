@@ -23,6 +23,7 @@
 #define ADVANCEDSETTINGSWINDOW_H
 
 #include <QDialog>
+#include <QFile>
 
 namespace Ui {
 class AdvancedSettingsWindow;
@@ -55,6 +56,15 @@ public:
      */
     void parceAttach(const QStringList &outList);
 
+    /**
+      *
+      * @brief extract from name
+      *
+      *
+      * @author Thibaud Lamarche <lamarchethibaud@hotmail.fr>
+      */
+    QFile extract(QString filepath, int mode, int id);
+
 private :
     /**
      * @brief ui The UI
@@ -80,6 +90,8 @@ private slots :
      * @author Geoffrey Bergé <geoffrey.berge@live.fr>
      */
     void on_buttonBox_OKCancel_rejected();
+
+
 };
 
 #endif // ADVANCEDSETTINGSWINDOW_H

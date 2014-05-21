@@ -112,29 +112,29 @@ void AdvancedSettingsWindow::parceAttach(const QStringList &outList)
 
 
     for (int i = 0; i < outList.count(); ++i) {
-    if (outList.at(i).contains("| + Joints")) {
+        if (outList.at(i).contains("| + Joints")) {
 
-        i++;
-        QString tempStr, name = "", type = "", taille = "", desc = "";
-        while (outList.at(i).contains(QRegExp("\\|\\ \\ \\+\\ .*"))) {
-            tempStr = outList.at(i);
-            if (outList.at(i).contains("Nom du fichier :")) {
-                name.append(tempStr.remove("|  + Nom du fichier : "));
-            }
-            else if (outList.at(i).contains("Type MIME :")) {
-                type = "Type : ";
-                type.append(tempStr.remove("|  + Type MIME : "));
-            }
-            else if (outList.at(i).contains("Données du fichier, taille :")) {
-                taille = tr("Size : ");
-                taille.append(tempStr.remove("|  + Données du fichier, taille : "));
-            }
-            else if (outList.at(i).contains("Description du fichier :")) {
-                desc = tempStr.remove("|   + Description du fichier : ");
-            }
             i++;
-        }
-        i--;
+            QString tempStr, name = "", type = "", taille = "", desc = "";
+            while (outList.at(i).contains(QRegExp("\\|\\ \\ \\+\\ .*"))) {
+                tempStr = outList.at(i);
+                if (outList.at(i).contains("Nom du fichier :")) {
+                    name.append(tempStr.remove("|  + Nom du fichier : "));
+                }
+                else if (outList.at(i).contains("Type MIME :")) {
+                    type = "Type : ";
+                    type.append(tempStr.remove("|  + Type MIME : "));
+                }
+                else if (outList.at(i).contains("Données du fichier, taille :")) {
+                    taille = tr("Size : ");
+                    taille.append(tempStr.remove("|  + Données du fichier, taille : "));
+                }
+                else if (outList.at(i).contains("Description du fichier :")) {
+                    desc = tempStr.remove("|   + Description du fichier : ");
+                }
+                i++;
+            }
+            i--;
 
         }
     }
@@ -149,4 +149,10 @@ void AdvancedSettingsWindow::on_buttonBox_OKCancel_accepted()
 void AdvancedSettingsWindow::on_buttonBox_OKCancel_rejected()
 {
     this->hide();
+}
+
+QFile AdvancedSettingsWindow::extract(QString filepath, int mode, int id){
+    QString modeStr = ((mode = 0) ? QString("attachments") : QString("tracks"));
+    QProcess* process = new QProcess();
+    process->start("mkvextract " + modeStr + " "+filepath+" "+QString::number(id));
 }
