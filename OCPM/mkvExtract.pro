@@ -12,7 +12,7 @@ TARGET = mkvExtract
 TEMPLATE = app
 
 
-SOURCES += main.cpp\
+SOURCES += main.cpp \
     advancedsettingswindow.cpp
 
 HEADERS  += \

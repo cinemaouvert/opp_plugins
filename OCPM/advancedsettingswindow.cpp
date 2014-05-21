@@ -158,3 +158,9 @@ void AdvancedSettingsWindow::on_buttonBox_OKCancel_rejected()
 {
     this->hide();
 }
+
+QFile AdvancedSettingsWindow::extract(QString filepath, int mode, int id){
+    QString modeStr = ((mode = 0) ? QString("attachments") : QString("tracks"));
+    QProcess* process = new QProcess();
+    process->start("mkvextract " + modeStr + " "+filepath+" "+QString::number(id));
+}
