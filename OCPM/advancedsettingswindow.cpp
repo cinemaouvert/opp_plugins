@@ -26,6 +26,7 @@
 #include <QListWidgetItem>
 #include <QDebug>
 #include <QApplication>
+#include <QDir>
 
 AdvancedSettingsWindow::AdvancedSettingsWindow(QWidget *parent) :
     QDialog(parent),
@@ -43,12 +44,12 @@ AdvancedSettingsWindow::~AdvancedSettingsWindow()
 
 void AdvancedSettingsWindow::getInfo(QString path)
 {
-    int i = path.lastIndexOf('/');
+    int i = path.lastIndexOf(QDir::separator());
     QString title = tr("File : ") + path.right(path.length()-i-1);
     ui->treeWidget_information->setHeaderLabel(title);
 
     QStringList args;
-    args<<"--ui-language"<<"fr_FR"<<path;
+    args<<"--ui-language"<<"fr"<<path;
 
     QProcess proc;
     proc.start("mkvinfo",args);
@@ -56,6 +57,18 @@ void AdvancedSettingsWindow::getInfo(QString path)
 
     QString output = QString::fromUtf8(proc.readAllStandardOutput());
     QStringList outList = output.split("\n");
+
+    if(outList.at(0).contains("Erreur") || outList.at(0).contains("Error") ) {
+        QStringList args;
+        args<<"--ui-language"<<"fr_FR"<<path;
+
+        QProcess proc;
+        proc.start("mkvinfo",args);
+        proc.waitForFinished(-1);
+
+        QString output = QString::fromUtf8(proc.readAllStandardOutput());
+        outList = output.split("\n");
+    }
 
     parceTracks(outList);
     parceAttach(outList);
@@ -65,6 +78,7 @@ void AdvancedSettingsWindow::parceTracks(const QStringList &outList)
 {
     int nb =1;
     for (int i = 0; i < outList.count(); ++i) {
+
     if (outList.at(i).contains("| + Une piste")) {
 
         QStringList* list = new QStringList();
