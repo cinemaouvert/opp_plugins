@@ -19,21 +19,24 @@
  * along with Open Projection Program. If not, see <http://www.gnu.org/licenses/>.
  **********************************************************************************/
 
-#ifndef ADVANCEDSETTINGSWINDOW_H
-#define ADVANCEDSETTINGSWINDOW_H
+#ifndef Plugin_Ocpm_H
+#define Plugin_Ocpm_H
 
 #include <QDialog>
 #include <QFile>
+#include "plugins.h"
 
 namespace Ui {
-class AdvancedSettingsWindow;
+class Plugin_Ocpm;
 }
-class AdvancedSettingsWindow : public QDialog
+class Plugin_Ocpm : public OCPM
 {
     Q_OBJECT
+    Q_INTERFACES(OCPM)
+
 public:
-    explicit AdvancedSettingsWindow(QWidget *parent = 0);
-    ~AdvancedSettingsWindow();
+    explicit Plugin_Ocpm(QWidget *parent = 0);
+    ~Plugin_Ocpm();
 
     /**
      * @brief getInfo
@@ -65,17 +68,46 @@ public:
       */
     void extract(QString filepath, int mode, int id,QString outputName = "");
 
+    /**
+      *
+      * @brief Used to return the name of the plugin
+      *
+      *
+      * @author Thibaud Lamarche <lamarchethibaud@hotmail.fr>
+      */
+    QString getName();
+
 private :
     /**
      * @brief ui The UI
      */
-    Ui::AdvancedSettingsWindow *ui;
+    Ui::Plugin_Ocpm *ui;
 
 signals:
 
 public slots:
+    /**
+      *
+      * @brief Used to launch the plugin
+      *
+      *
+      * @author Thibaud Lamarche <lamarchethibaud@hotmail.fr>
+      */
+    void launch();
 
 private slots :
+
+
+    /**
+      *
+      * @brief Used set the filename
+      *
+      *
+      * @author Thibaud Lamarche <lamarchethibaud@hotmail.fr>
+      */
+    void setFilename(QString * filename);
+
+
 
     /**
      * @brief Save modified settings and close the window
@@ -94,4 +126,4 @@ private slots :
 
 };
 
-#endif // ADVANCEDSETTINGSWINDOW_H
+#endif // Plugin_Ocpm_H

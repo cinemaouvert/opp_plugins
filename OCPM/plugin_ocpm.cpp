@@ -19,8 +19,8 @@
  * along with Open Projection Program. If not, see <http://www.gnu.org/licenses/>.
  **********************************************************************************/
 
-#include "advancedsettingswindow.h"
-#include "ui_advancedsettingswindow.h"
+#include "plugin_ocpm.h"
+#include "ui_plugin_ocpm.h"
 
 #include <QProcess>
 #include <QListWidgetItem>
@@ -28,21 +28,20 @@
 #include <QApplication>
 #include <QDir>
 
-AdvancedSettingsWindow::AdvancedSettingsWindow(QWidget *parent) :
-    QDialog(parent),
-    ui(new Ui::AdvancedSettingsWindow)
+Q_EXPORT_PLUGIN2(Plugin_Ocpm, Plugin_Ocpm)
+
+Plugin_Ocpm::Plugin_Ocpm(QWidget *parent) :
+    ui(new Ui::Plugin_Ocpm)
 {
     ui->setupUi(this);
-    this->show();
-
 }
 
-AdvancedSettingsWindow::~AdvancedSettingsWindow()
+Plugin_Ocpm::~Plugin_Ocpm()
 {
     delete ui;
 }
 
-void AdvancedSettingsWindow::getInfo(QString path)
+void Plugin_Ocpm::getInfo(QString path)
 {
     int i = path.lastIndexOf(QDir::separator());
     QString title = tr("File : ") + path.right(path.length()-i-1);
@@ -76,7 +75,7 @@ void AdvancedSettingsWindow::getInfo(QString path)
     extract(path,0,2);
 }
 
-void AdvancedSettingsWindow::parceTracks(const QStringList &outList)
+void Plugin_Ocpm::parceTracks(const QStringList &outList)
 {
     int nb =1;
     for (int i = 0; i < outList.count(); ++i) {
@@ -113,7 +112,7 @@ void AdvancedSettingsWindow::parceTracks(const QStringList &outList)
     }
 }
 
-void AdvancedSettingsWindow::parceAttach(const QStringList &outList)
+void Plugin_Ocpm::parceAttach(const QStringList &outList)
 {
 
     int nb =1;
@@ -150,18 +149,18 @@ void AdvancedSettingsWindow::parceAttach(const QStringList &outList)
     }
 }
 
-void AdvancedSettingsWindow::on_buttonBox_OKCancel_accepted()
+void Plugin_Ocpm::on_buttonBox_OKCancel_accepted()
 {
 
 }
 
 
-void AdvancedSettingsWindow::on_buttonBox_OKCancel_rejected()
+void Plugin_Ocpm::on_buttonBox_OKCancel_rejected()
 {
     this->hide();
 }
 
-void AdvancedSettingsWindow::extract(QString filepath, int mode, int id,QString outputName){
+void Plugin_Ocpm::extract(QString filepath, int mode, int id,QString outputName){
     QString modeStr = ((mode == 0) ? QString("attachments") : QString("tracks"));
     QProcess* process = new QProcess();
     QStringList args;
@@ -173,3 +172,20 @@ void AdvancedSettingsWindow::extract(QString filepath, int mode, int id,QString 
     process->start("mkvextract",args);
     process->waitForFinished(-1);
 }
+
+QString Plugin_Ocpm::getName(){
+    return "OCPM plugin";
+}
+
+void Plugin_Ocpm::launch(){
+    this->show();
+    if(_filename != NULL){
+        if((*_filename).compare("") != 0)
+            this->getInfo(*_filename);
+    }
+}
+
+void Plugin_Ocpm::setFilename(QString * filename){
+    this->_filename = filename;
+}
+

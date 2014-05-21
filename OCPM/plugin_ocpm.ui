@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>AdvancedSettingsWindow</class>
- <widget class="QDialog" name="AdvancedSettingsWindow">
+ <class>Plugin_Ocpm</class>
+ <widget class="QDialog" name="Plugin_Ocpm">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -96,7 +96,13 @@
     <item>
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
-       <widget class="QTreeWidget" name="treeWidget_information"/>
+       <widget class="QTreeWidget" name="treeWidget_information">
+        <column>
+         <property name="text">
+          <string notr="true">1</string>
+         </property>
+        </column>
+       </widget>
       </item>
       <item>
        <widget class="QPushButton" name="pushButton_attachment">
