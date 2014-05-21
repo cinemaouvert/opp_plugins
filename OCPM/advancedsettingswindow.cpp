@@ -1,0 +1,152 @@
+/**********************************************************************************
+ * This file is part of Open Projection Program (OPP).
+ *
+ * Copyright (C) 2014 Catalogue Ouvert du Cinéma <dev@cinemaouvert.fr>
+ *
+ * Authors: Geoffrey Bergé <geoffrey.berge@live.fr>
+ *
+ * Open Projection Program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Open Projection Program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Open Projection Program. If not, see <http://www.gnu.org/licenses/>.
+ **********************************************************************************/
+
+#include "advancedsettingswindow.h"
+#include "ui_advancedsettingswindow.h"
+
+#include <QProcess>
+#include <QListWidgetItem>
+#include <QDebug>
+#include <QApplication>
+
+AdvancedSettingsWindow::AdvancedSettingsWindow(QWidget *parent) :
+    QDialog(parent),
+    ui(new Ui::AdvancedSettingsWindow)
+{
+    ui->setupUi(this);
+    this->show();
+
+}
+
+AdvancedSettingsWindow::~AdvancedSettingsWindow()
+{
+    delete ui;
+}
+
+void AdvancedSettingsWindow::getInfo(QString path)
+{
+    QString currFile = path;
+
+    QStringList args;
+    args<<"--ui-language"<<"fr_FR"<<path;
+
+    QProcess proc;
+    proc.start("mkvinfo",args);
+    proc.waitForFinished(-1);
+
+    QString output = proc.readAllStandardOutput();
+    QStringList outList = output.split("\n");
+
+    parceTracks(outList);
+    parceAttach(outList);
+}
+
+void AdvancedSettingsWindow::parceTracks(const QStringList &outList)
+{
+    int nb =1;
+    for (int i = 0; i < outList.count(); ++i) {
+    if (outList.at(i).contains("| + Une piste")) {
+
+        QStringList* list = new QStringList();
+        list->append(tr("Track ") + QString::number(nb));
+        QTreeWidgetItem* track = new QTreeWidgetItem(*list);
+        //int nbEspaces = 2;
+        i++;
+        //QStringList* param = new QStringList();
+        QString tempStr;
+        while (outList.at(i).contains(QRegExp("\\|\\ \\ \\+\\ .*")) || outList.at(i).contains(QRegExp("\\|\\ \\ \\ \\+\\ .*")) ) {
+            tempStr = outList.at(i);
+
+            QTreeWidgetItem* param;
+
+            if(outList.at(i).contains(QRegExp("\\|\\ \\ \\+\\ .*"))) {
+                tempStr = tempStr.remove("|  + ");
+                QStringList* l = new QStringList();
+                l->append(tempStr);
+                QTreeWidgetItem* param = new QTreeWidgetItem(*l);
+                track->addChild(param);
+            }
+            /*else if(outList.at(i).contains(QRegExp("\\|\\ \\ \\ \\+\\ .*"))) {
+                tempStr = tempStr.remove("|   + ");
+                QStringList* l = new QStringList();
+                l->append(tempStr);
+                QTreeWidgetItem* subParam = new QTreeWidgetItem(*l);
+                param->addChild(subParam);
+                //nbEspaces = 3;
+            }*/
+            i++;
+        }
+
+
+        ui->treeWidget_information->addTopLevelItem(track);
+        nb++;
+
+        i--;
+
+
+
+        }
+    }
+}
+
+void AdvancedSettingsWindow::parceAttach(const QStringList &outList)
+{
+
+
+    for (int i = 0; i < outList.count(); ++i) {
+    if (outList.at(i).contains("| + Joints")) {
+
+        i++;
+        QString tempStr, name = "", type = "", taille = "", desc = "";
+        while (outList.at(i).contains(QRegExp("\\|\\ \\ \\+\\ .*"))) {
+            tempStr = outList.at(i);
+            if (outList.at(i).contains("Nom du fichier :")) {
+                name.append(tempStr.remove("|  + Nom du fichier : "));
+            }
+            else if (outList.at(i).contains("Type MIME :")) {
+                type = "Type : ";
+                type.append(tempStr.remove("|  + Type MIME : "));
+            }
+            else if (outList.at(i).contains("Données du fichier, taille :")) {
+                taille = tr("Size : ");
+                taille.append(tempStr.remove("|  + Données du fichier, taille : "));
+            }
+            else if (outList.at(i).contains("Description du fichier :")) {
+                desc = tempStr.remove("|   + Description du fichier : ");
+            }
+            i++;
+        }
+        i--;
+
+        }
+    }
+}
+
+void AdvancedSettingsWindow::on_buttonBox_OKCancel_accepted()
+{
+
+}
+
+
+void AdvancedSettingsWindow::on_buttonBox_OKCancel_rejected()
+{
+    this->hide();
+}
