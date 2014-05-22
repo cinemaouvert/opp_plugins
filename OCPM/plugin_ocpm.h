@@ -24,6 +24,7 @@
 
 #include <QDialog>
 #include <QFile>
+#include <QTreeWidgetItem>
 #include "plugins.h"
 
 namespace Ui {
@@ -66,7 +67,7 @@ public:
       *
       * @author Thibaud Lamarche <lamarchethibaud@hotmail.fr>
       */
-    void extract(QString filepath, int mode, int id,QString outputName = "");
+    void extract(QString filepath, int mode, QString id,QString outputName = "");
 
     /**
       *
@@ -82,6 +83,11 @@ private :
      * @brief ui The UI
      */
     Ui::Plugin_Ocpm *ui;
+
+    /**
+     * @brief listItems
+     */
+    QList<QTreeWidgetItem *> _listItems;
 
 signals:
 
@@ -124,6 +130,7 @@ private slots :
     void on_buttonBox_OKCancel_rejected();
 
 
+    void on_pushButton_attachment_clicked();
 };
 
 #endif // Plugin_Ocpm_H

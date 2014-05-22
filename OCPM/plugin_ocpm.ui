@@ -107,7 +107,7 @@
       <item>
        <widget class="QPushButton" name="pushButton_attachment">
         <property name="enabled">
-         <bool>false</bool>
+         <bool>true</bool>
         </property>
         <property name="text">
          <string>Download attachment files</string>

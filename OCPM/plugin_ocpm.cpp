@@ -27,6 +27,8 @@
 #include <QDebug>
 #include <QApplication>
 #include <QDir>
+#include <QCheckBox>
+#include <QFileDialog>
 
 Q_EXPORT_PLUGIN2(Plugin_Ocpm, Plugin_Ocpm)
 
@@ -34,6 +36,7 @@ Plugin_Ocpm::Plugin_Ocpm(QWidget *parent) :
     ui(new Ui::Plugin_Ocpm)
 {
     ui->setupUi(this);
+    ui->treeWidget_information->setHeaderLabel(tr("File : "));
 }
 
 Plugin_Ocpm::~Plugin_Ocpm()
@@ -43,6 +46,8 @@ Plugin_Ocpm::~Plugin_Ocpm()
 
 void Plugin_Ocpm::getInfo(QString path)
 {
+    ui->treeWidget_information->clear();
+
     int i = path.lastIndexOf(QDir::separator());
     QString title = tr("File : ") + path.right(path.length()-i-1);
     ui->treeWidget_information->setHeaderLabel(title);
@@ -72,7 +77,7 @@ void Plugin_Ocpm::getInfo(QString path)
     parceTracks(outList);
     parceAttach(outList);
 
-    extract(path,0,2);
+    //extract(path,0,QString("2"));
 }
 
 void Plugin_Ocpm::parceTracks(const QStringList &outList)
@@ -80,78 +85,81 @@ void Plugin_Ocpm::parceTracks(const QStringList &outList)
     int nb =1;
     for (int i = 0; i < outList.count(); ++i) {
 
-    if (outList.at(i).contains("| + Une piste")) {
+        if (outList.at(i).contains("| + Une piste")) {
 
-        QStringList* list = new QStringList();
-        list->append(tr("Track ") + QString::number(nb));
-        QTreeWidgetItem* track = new QTreeWidgetItem(*list);
-
-        i++;
-
-        QString tempStr;
-        while (outList.at(i).contains(QRegExp("\\|\\ \\ \\+\\ .*")) || outList.at(i).contains(QRegExp("\\|\\ \\ \\ \\+\\ .*")) ) {
-            tempStr = outList.at(i);
-
-            if(outList.at(i).contains(QRegExp("\\|\\ \\ \\+\\ .*")))
-                tempStr = tempStr.remove("|  + ");
-            else if(outList.at(i).contains(QRegExp("\\|\\ \\ \\ \\+\\ .*")))
-                tempStr = tempStr.remove("|   + ");
-
-            QStringList* l = new QStringList();
-            l->append(tempStr);
-            QTreeWidgetItem* param = new QTreeWidgetItem(*l);
-            track->addChild(param);
+            QStringList* list = new QStringList();
+            list->append(tr("Track ") + QString::number(nb));
+            QTreeWidgetItem* track = new QTreeWidgetItem(*list);
 
             i++;
-        }
-        ui->treeWidget_information->addTopLevelItem(track);
-        nb++;
 
-        i--;
+            QString tempStr;
+            while (outList.at(i).contains(QRegExp("\\|\\ \\ \\+\\ .*")) || outList.at(i).contains(QRegExp("\\|\\ \\ \\ \\+\\ .*")) ) {
+                tempStr = outList.at(i);
+
+                if(outList.at(i).contains(QRegExp("\\|\\ \\ \\+\\ .*")))
+                    tempStr = tempStr.remove("|  + ");
+                else if(outList.at(i).contains(QRegExp("\\|\\ \\ \\ \\+\\ .*")))
+                    tempStr = tempStr.remove("|   + ");
+
+                QStringList* l = new QStringList();
+                l->append(tempStr);
+                QTreeWidgetItem* param = new QTreeWidgetItem(*l);
+                track->addChild(param);
+                i++;
+            }
+            ui->treeWidget_information->addTopLevelItem(track);
+            nb++;
+            i--;
         }
     }
 }
 
 void Plugin_Ocpm::parceAttach(const QStringList &outList)
 {
-
     int nb =1;
     for (int i = 0; i < outList.count(); ++i) {
-    if (outList.at(i).contains("| + Joints")) {
+        if (outList.at(i).contains("| + Joints")) {
 
-        QStringList* list = new QStringList();
-        list->append(tr("Attachment ") + QString::number(nb));
-        QTreeWidgetItem* track = new QTreeWidgetItem(*list);
-
-        i++;
-
-        QString tempStr;
-        while (outList.at(i).contains(QRegExp("\\|\\ \\ \\+\\ .*")) || outList.at(i).contains(QRegExp("\\|\\ \\ \\ \\+\\ .*")) ) {
-            tempStr = outList.at(i);
-
-            if(outList.at(i).contains(QRegExp("\\|\\ \\ \\+\\ .*")))
-                tempStr = tempStr.remove("|  + ");
-            else if(outList.at(i).contains(QRegExp("\\|\\ \\ \\ \\+\\ .*")))
-                tempStr = tempStr.remove("|   + ");
-
-            QStringList* l = new QStringList();
-            l->append(tempStr);
-            QTreeWidgetItem* param = new QTreeWidgetItem(*l);
-            track->addChild(param);
+            QStringList* list = new QStringList();
+            list->append(tr("Attachment ") + QString::number(nb));
+            QTreeWidgetItem* track = new QTreeWidgetItem(*list);
+            track->setFlags(track->flags()|Qt::ItemIsUserCheckable);
+            track->setCheckState(0,Qt::Unchecked);
 
             i++;
-        }
-        ui->treeWidget_information->addTopLevelItem(track);
-        nb++;
 
-        i--;
+            QString tempStr;
+            while (outList.at(i).contains(QRegExp("\\|\\ \\ \\+\\ .*")) || outList.at(i).contains(QRegExp("\\|\\ \\ \\ \\+\\ .*")) ) {
+                tempStr = outList.at(i);
+
+                if(outList.at(i).contains(QRegExp("\\|\\ \\ \\+\\ .*")))
+                    tempStr = tempStr.remove("|  + ");
+                else if(outList.at(i).contains(QRegExp("\\|\\ \\ \\ \\+\\ .*")))
+                    tempStr = tempStr.remove("|   + ");
+
+                QStringList* l = new QStringList();
+                l->append(tempStr);
+                QTreeWidgetItem* param = new QTreeWidgetItem(*l);
+
+                if(tempStr.contains("info.xml")) {
+                    extract(*_filename,0,QString::number(nb));
+                }
+                track->addChild(param);
+                i++;
+            }
+            ui->treeWidget_information->addTopLevelItem(track);
+            _listItems.append(track);
+            nb++;
+            i--;
         }
     }
+
 }
 
 void Plugin_Ocpm::on_buttonBox_OKCancel_accepted()
 {
-
+    this->hide();
 }
 
 
@@ -160,24 +168,28 @@ void Plugin_Ocpm::on_buttonBox_OKCancel_rejected()
     this->hide();
 }
 
-void Plugin_Ocpm::extract(QString filepath, int mode, int id,QString outputName){
+void Plugin_Ocpm::extract(QString filepath, int mode, QString id,QString outputName)
+{
     QString modeStr = ((mode == 0) ? QString("attachments") : QString("tracks"));
     QProcess* process = new QProcess();
     QStringList args;
-    if(outputName != "")
-        args<<modeStr<<filepath<<QString::number(id)+":"+outputName;
-    else
-        args<<modeStr<<filepath<<QString::number(id);
 
+    args<<modeStr<<filepath<<id;
+
+    process->setWorkingDirectory(outputName);
     process->start("mkvextract",args);
     process->waitForFinished(-1);
+
+    //qDebug() << QString::fromUtf8(process->readAllStandardOutput());
 }
 
-QString Plugin_Ocpm::getName(){
+QString Plugin_Ocpm::getName()
+{
     return "OCPM plugin";
 }
 
-void Plugin_Ocpm::launch(){
+void Plugin_Ocpm::launch()
+{
     this->show();
     if(_filename != NULL){
         if((*_filename).compare("") != 0)
@@ -185,7 +197,21 @@ void Plugin_Ocpm::launch(){
     }
 }
 
-void Plugin_Ocpm::setFilename(QString * filename){
+void Plugin_Ocpm::setFilename(QString * filename)
+{
     this->_filename = filename;
 }
 
+
+
+void Plugin_Ocpm::on_pushButton_attachment_clicked()
+{
+    QString dir = QFileDialog::getExistingDirectory(this, tr("Set Output Folder"),QDir::homePath());
+
+    foreach (QTreeWidgetItem *item, _listItems) {
+        if (item->checkState(0) == Qt::Checked) {
+            extract(*_filename,0,item->text(0).remove(tr("Attachment ")),dir);
+        }
+    }
+
+}
