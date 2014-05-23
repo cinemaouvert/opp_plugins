@@ -29,6 +29,8 @@
 #include <QDir>
 #include <QCheckBox>
 #include <QFileDialog>
+#include <QtXml>
+#include <QMessageBox>
 
 Q_EXPORT_PLUGIN2(Plugin_Ocpm, Plugin_Ocpm)
 
@@ -77,6 +79,7 @@ void Plugin_Ocpm::getInfo(QString path)
     parceTracks(outList);
     parceAttach(outList);
 
+    parceXML();
     //extract(path,0,QString("2"));
 }
 
@@ -214,4 +217,41 @@ void Plugin_Ocpm::on_pushButton_attachment_clicked()
         }
     }
 
+}
+
+void Plugin_Ocpm::parceXML() {
+
+
+    QFile file("info.xml");
+    if (!file.open(QIODevice::ReadOnly)) {
+        QMessageBox::information(this, tr("File info.xml was not found."),file.errorString());
+    }else{
+        QString xml = QString::fromUtf8(file.readAll());
+        QStringList listXml = xml.split("\n");
+
+        for (int i = 2; i < listXml.count()-1; i++) {
+            QString tmp = listXml.at(i);
+
+            QString elt = tmp;
+            int pos = elt.lastIndexOf('<');
+            elt = elt.left(pos);
+            pos = elt.indexOf('>');
+            elt = elt.right(elt.length()-pos-1);
+
+            QString name = tmp;
+            pos = name.indexOf('>');
+            name = name.left(pos);
+            pos = name.indexOf('<');
+            name = name.right(name.length()-pos-1);
+            name.remove("dc:");
+            name = name.toUpper();
+            name += " : ";
+
+            QString text = ui->label_xml->text() + "\n" + name + elt;
+            ui->label_xml->setText(text);
+        }
+
+        file.close();
+        file.remove();
+    }
 }
