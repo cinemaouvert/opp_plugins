@@ -72,8 +72,10 @@ void Plugin_Ocpm::getInfo(QString path)
         proc.start("mkvinfo",args);
         proc.waitForFinished(-1);
 
+
         QString output = QString::fromUtf8(proc.readAllStandardOutput());
         outList = output.split("\n");
+        proc.close();
     }
 
     parceTracks(outList);
@@ -182,6 +184,7 @@ void Plugin_Ocpm::extract(QString filepath, int mode, QString id,QString outputN
     process->setWorkingDirectory(outputName);
     process->start("mkvextract",args);
     process->waitForFinished(-1);
+    process->close();
 
     //qDebug() << QString::fromUtf8(process->readAllStandardOutput());
 }
@@ -194,6 +197,7 @@ QString Plugin_Ocpm::getName()
 void Plugin_Ocpm::launch()
 {
     this->show();
+    _listItems.clear();
     if(_filename != NULL){
         if((*_filename).compare("") != 0)
             this->getInfo(*_filename);
@@ -210,10 +214,11 @@ void Plugin_Ocpm::setFilename(QString * filename)
 void Plugin_Ocpm::on_pushButton_attachment_clicked()
 {
     QString dir = QFileDialog::getExistingDirectory(this, tr("Set Output Folder"),QDir::homePath());
-
-    foreach (QTreeWidgetItem *item, _listItems) {
-        if (item->checkState(0) == Qt::Checked) {
-            extract(*_filename,0,item->text(0).remove(tr("Attachment ")),dir);
+    if(_listItems.count() > 0){
+        foreach (QTreeWidgetItem *item, _listItems) {
+            if (item->checkState(0) == Qt::Checked) {
+                extract(*_filename,0,item->text(0).remove(tr("Attachment ")),dir);
+            }
         }
     }
 
