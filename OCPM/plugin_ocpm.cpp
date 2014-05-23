@@ -147,7 +147,7 @@ void Plugin_Ocpm::parceAttach(const QStringList &outList)
                 l->append(tempStr);
                 QTreeWidgetItem* param = new QTreeWidgetItem(*l);
 
-                if(tempStr.contains("info.xml")) {
+                if(tempStr.contains(FICHIERXML)) {
                     extract(*_filename,0,QString::number(nb));
                 }
                 track->addChild(param);
@@ -214,20 +214,27 @@ void Plugin_Ocpm::setFilename(QString * filename)
 void Plugin_Ocpm::on_pushButton_attachment_clicked()
 {
     QString dir = QFileDialog::getExistingDirectory(this, tr("Set Output Folder"),QDir::homePath());
+    int cpt = 0;
     if(_listItems.count() > 0){
         foreach (QTreeWidgetItem *item, _listItems) {
             if (item->checkState(0) == Qt::Checked) {
                 extract(*_filename,0,item->text(0).remove(tr("Attachment ")),dir);
+                cpt++;
             }
         }
+        if(cpt > 0)
+            QMessageBox::information(this, tr("Extracting"),tr("Attachments were extracted."));
+        else
+            QMessageBox::information(this, tr("Extracting"),tr("No attachments selected."));
     }
+
 
 }
 
 void Plugin_Ocpm::parceXML() {
 
 
-    QFile file("info.xml");
+    QFile file(FICHIERXML);
     if (!file.open(QIODevice::ReadOnly)) {
         QMessageBox::information(this, tr("File info.xml was not found."),file.errorString());
     }else{
@@ -249,6 +256,11 @@ void Plugin_Ocpm::parceXML() {
             pos = name.indexOf('<');
             name = name.right(name.length()-pos-1);
             name.remove("dc:");
+
+            if(name.contains(NAMEMD5)) {
+                QString lienMD5 = elt;       //TODO  :  VERIFER LE MD5--------------------------------------
+            }
+
             name = name.toUpper();
             name += " : ";
 

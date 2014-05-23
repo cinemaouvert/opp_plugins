@@ -85,6 +85,17 @@ public:
      */
     void parceXML();
 
+    /**
+     * @brief FICHIERXML xml file name
+     *
+     * @author Geoffrey Bergé <geoffrey.berge@live.fr>
+     */
+    const QString FICHIERXML = "info.xml";
+
+    const QString NAMEMD5 = "onlinesum";
+
+
+
 private :
     /**
      * @brief ui The UI
