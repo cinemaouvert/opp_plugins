@@ -32,6 +32,7 @@
 #include <QtXml>
 #include <QMessageBox>
 
+
 Q_EXPORT_PLUGIN2(Plugin_Ocpm, Plugin_Ocpm)
 
 Plugin_Ocpm::Plugin_Ocpm(QWidget *parent) :
@@ -39,6 +40,7 @@ Plugin_Ocpm::Plugin_Ocpm(QWidget *parent) :
 {
     ui->setupUi(this);
     ui->treeWidget_information->setHeaderLabel(tr("File : "));
+    ui->textEdit_xml->setReadOnly(1);
 }
 
 Plugin_Ocpm::~Plugin_Ocpm()
@@ -49,6 +51,7 @@ Plugin_Ocpm::~Plugin_Ocpm()
 void Plugin_Ocpm::getInfo(QString path)
 {
     ui->treeWidget_information->clear();
+    ui->textEdit_xml->clear();
 
     int i = path.lastIndexOf(QDir::separator());
     QString title = tr("File : ") + path.right(path.length()-i-1);
@@ -214,20 +217,21 @@ void Plugin_Ocpm::setFilename(QString * filename)
 void Plugin_Ocpm::on_pushButton_attachment_clicked()
 {
     QString dir = QFileDialog::getExistingDirectory(this, tr("Set Output Folder"),QDir::homePath());
-    int cpt = 0;
-    if(_listItems.count() > 0){
-        foreach (QTreeWidgetItem *item, _listItems) {
-            if (item->checkState(0) == Qt::Checked) {
-                extract(*_filename,0,item->text(0).remove(tr("Attachment ")),dir);
-                cpt++;
+    if(!dir.isEmpty()) {
+        int cpt = 0;
+        if(_listItems.count() > 0){
+            foreach (QTreeWidgetItem *item, _listItems) {
+                if (item->checkState(0) == Qt::Checked) {
+                    extract(*_filename,0,item->text(0).remove(tr("Attachment ")),dir);
+                    cpt++;
+                }
             }
+            if(cpt > 0)
+                QMessageBox::information(this, tr("Extracting"),tr("Attachments were extracted."));
+            else
+                QMessageBox::information(this, tr("Extracting"),tr("No attachments selected."));
         }
-        if(cpt > 0)
-            QMessageBox::information(this, tr("Extracting"),tr("Attachments were extracted."));
-        else
-            QMessageBox::information(this, tr("Extracting"),tr("No attachments selected."));
     }
-
 
 }
 
@@ -255,17 +259,18 @@ void Plugin_Ocpm::parceXML() {
             name = name.left(pos);
             pos = name.indexOf('<');
             name = name.right(name.length()-pos-1);
-            name.remove("dc:");
 
             if(name.contains(NAMEMD5)) {
                 QString lienMD5 = elt;       //TODO  :  VERIFER LE MD5--------------------------------------
             }
 
-            name = name.toUpper();
-            name += " : ";
+            if(name.contains("dc:")) {
+                name.remove("dc:");
+                name = name.toUpper();
+                name += " : ";
 
-            QString text = ui->label_xml->text() + "\n" + name + elt;
-            ui->label_xml->setText(text);
+                ui->textEdit_xml->append(name + elt + "\n");
+            }
         }
 
         file.close();
