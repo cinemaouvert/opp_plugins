@@ -323,6 +323,7 @@ bool Plugin_Ocpm::checkMd5(QString filename){
         result = true;
         qDebug() << md5toCheck;
     }else{
+        QMessageBox::warning(NULL, tr("Check MD5"), tr("Check MD5 : MD5 file unreachable"));
         QApplication::restoreOverrideCursor();
         QMessageBox::warning(NULL, tr("Check MD5"), tr("Check MD5 can not possible, check your connection"));
     }
