@@ -34,11 +34,7 @@
         <enum>QLayout::SetDefaultConstraint</enum>
        </property>
        <item>
-        <widget class="QTextEdit" name="textEdit_xml">
-         <property name="enabled">
-          <bool>true</bool>
-         </property>
-        </widget>
+        <widget class="QTextBrowser" name="textBrowser_xml"/>
        </item>
        <item>
         <widget class="QLabel" name="label_md5">
