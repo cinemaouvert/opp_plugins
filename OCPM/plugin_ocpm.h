@@ -22,6 +22,18 @@
 #ifndef Plugin_Ocpm_H
 #define Plugin_Ocpm_H
 
+
+#include <QtNetwork/QNetworkAccessManager>
+#include <QtNetwork/QNetworkRequest>
+#include <QtNetwork/QNetworkReply>
+
+#include <QtCore/QUrl>
+#include <QtCore/QFile>
+#include <QEventLoop>
+#include <QMessageBox>
+#include <QProcess>
+
+#include <QCryptographicHash>
 #include <QDialog>
 #include <QFile>
 #include <QTreeWidgetItem>
@@ -86,6 +98,20 @@ public:
     void parceXML();
 
     /**
+     * @brief check MD5 with a md5 on a website
+     *
+     * @author Denis Saunier <saunier.denis.86@gmail.com>
+     */
+    bool checkMd5(QString nameFile);
+
+    /**
+     * @brief get MD5 for a file
+     *
+     * @author Denis Saunier <saunier.denis.86@gmail.com>
+     */
+    QString md5File(QString pathFile);
+
+    /**
      * @brief FICHIERXML xml file name
      *
      * @author Geoffrey Bergé <geoffrey.berge@live.fr>
@@ -106,6 +132,12 @@ private :
      * @brief listItems
      */
     QList<QTreeWidgetItem *> _listItems;
+
+    /**
+     *@brief path of filename
+     */
+    QString _path;
+
 
 signals:
 

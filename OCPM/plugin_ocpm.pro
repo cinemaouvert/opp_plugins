@@ -6,6 +6,7 @@
 
 QT       += core gui
 QT += xml
+QT += network
 
 TARGET = plugin_ocpm
 TEMPLATE = lib
