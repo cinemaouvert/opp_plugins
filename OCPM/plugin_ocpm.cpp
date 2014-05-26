@@ -29,6 +29,9 @@
 #include <QDir>
 #include <QCheckBox>
 #include <QFileDialog>
+#include <QtXml>
+#include <QMessageBox>
+
 
 Q_EXPORT_PLUGIN2(Plugin_Ocpm, Plugin_Ocpm)
 
@@ -37,6 +40,7 @@ Plugin_Ocpm::Plugin_Ocpm(QWidget *parent) :
 {
     ui->setupUi(this);
     ui->treeWidget_information->setHeaderLabel(tr("File : "));
+    ui->textEdit_xml->setReadOnly(1);
 }
 
 Plugin_Ocpm::~Plugin_Ocpm()
@@ -47,6 +51,7 @@ Plugin_Ocpm::~Plugin_Ocpm()
 void Plugin_Ocpm::getInfo(QString path)
 {
     ui->treeWidget_information->clear();
+    ui->textEdit_xml->clear();
 
     int i = path.lastIndexOf(QDir::separator());
     QString title = tr("File : ") + path.right(path.length()-i-1);
@@ -70,13 +75,16 @@ void Plugin_Ocpm::getInfo(QString path)
         proc.start("mkvinfo",args);
         proc.waitForFinished(-1);
 
+
         QString output = QString::fromUtf8(proc.readAllStandardOutput());
         outList = output.split("\n");
+        proc.close();
     }
 
     parceTracks(outList);
     parceAttach(outList);
 
+    parceXML();
     //extract(path,0,QString("2"));
 }
 
@@ -142,7 +150,7 @@ void Plugin_Ocpm::parceAttach(const QStringList &outList)
                 l->append(tempStr);
                 QTreeWidgetItem* param = new QTreeWidgetItem(*l);
 
-                if(tempStr.contains("info.xml")) {
+                if(tempStr.contains(FICHIERXML)) {
                     extract(*_filename,0,QString::number(nb));
                 }
                 track->addChild(param);
@@ -179,6 +187,7 @@ void Plugin_Ocpm::extract(QString filepath, int mode, QString id,QString outputN
     process->setWorkingDirectory(outputName);
     process->start("mkvextract",args);
     process->waitForFinished(-1);
+    process->close();
 
     //qDebug() << QString::fromUtf8(process->readAllStandardOutput());
 }
@@ -191,6 +200,7 @@ QString Plugin_Ocpm::getName()
 void Plugin_Ocpm::launch()
 {
     this->show();
+    _listItems.clear();
     if(_filename != NULL){
         if((*_filename).compare("") != 0)
             this->getInfo(*_filename);
@@ -207,11 +217,63 @@ void Plugin_Ocpm::setFilename(QString * filename)
 void Plugin_Ocpm::on_pushButton_attachment_clicked()
 {
     QString dir = QFileDialog::getExistingDirectory(this, tr("Set Output Folder"),QDir::homePath());
-
-    foreach (QTreeWidgetItem *item, _listItems) {
-        if (item->checkState(0) == Qt::Checked) {
-            extract(*_filename,0,item->text(0).remove(tr("Attachment ")),dir);
+    if(!dir.isEmpty()) {
+        int cpt = 0;
+        if(_listItems.count() > 0){
+            foreach (QTreeWidgetItem *item, _listItems) {
+                if (item->checkState(0) == Qt::Checked) {
+                    extract(*_filename,0,item->text(0).remove(tr("Attachment ")),dir);
+                    cpt++;
+                }
+            }
+            if(cpt > 0)
+                QMessageBox::information(this, tr("Extracting"),tr("Attachments were extracted."));
+            else
+                QMessageBox::information(this, tr("Extracting"),tr("No attachments selected."));
         }
     }
 
+}
+
+void Plugin_Ocpm::parceXML() {
+
+
+    QFile file(FICHIERXML);
+    if (!file.open(QIODevice::ReadOnly)) {
+        QMessageBox::information(this, tr("File info.xml was not found."),file.errorString());
+    }else{
+        QString xml = QString::fromUtf8(file.readAll());
+        QStringList listXml = xml.split("\n");
+
+        for (int i = 2; i < listXml.count()-1; i++) {
+            QString tmp = listXml.at(i);
+
+            QString elt = tmp;
+            int pos = elt.lastIndexOf('<');
+            elt = elt.left(pos);
+            pos = elt.indexOf('>');
+            elt = elt.right(elt.length()-pos-1);
+
+            QString name = tmp;
+            pos = name.indexOf('>');
+            name = name.left(pos);
+            pos = name.indexOf('<');
+            name = name.right(name.length()-pos-1);
+
+            if(name.contains(NAMEMD5)) {
+                QString lienMD5 = elt;       //TODO  :  VERIFER LE MD5--------------------------------------
+            }
+
+            if(name.contains("dc:")) {
+                name.remove("dc:");
+                name = name.toUpper();
+                name += " : ";
+
+                ui->textEdit_xml->append(name + elt + "\n");
+            }
+        }
+
+        file.close();
+        file.remove();
+    }
 }

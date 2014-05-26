@@ -47,14 +47,14 @@ public:
     void getInfo(QString path);
 
     /**
-     * @brief parceTracks
+     * @brief parceTracks parce tracks in mkvinfo
      *
      * @author Geoffrey Bergé <geoffrey.berge@live.fr>
      */
     void parceTracks(const QStringList &outList);
 
     /**
-     * @brief parceAttach
+     * @brief parceAttach parce attachments in mkvinfo
      *
      * @author Geoffrey Bergé <geoffrey.berge@live.fr>
      */
@@ -77,6 +77,24 @@ public:
       * @author Thibaud Lamarche <lamarchethibaud@hotmail.fr>
       */
     QString getName();
+
+    /**
+     * @brief parceXML parce info.xml
+     *
+     * @author Geoffrey Bergé <geoffrey.berge@live.fr>
+     */
+    void parceXML();
+
+    /**
+     * @brief FICHIERXML xml file name
+     *
+     * @author Geoffrey Bergé <geoffrey.berge@live.fr>
+     */
+    const QString FICHIERXML = "info.xml";
+
+    const QString NAMEMD5 = "onlinesum";
+
+
 
 private :
     /**
