@@ -134,11 +134,6 @@ private :
     QList<QTreeWidgetItem *> _listItems;
 
     /**
-     *@brief path of filename
-     */
-    QString _path;
-
-    /**
      *@brief link of file md5
      */
     QString _linkMD5;
