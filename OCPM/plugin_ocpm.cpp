@@ -289,7 +289,7 @@ void Plugin_Ocpm::parceXML() {
                 name = name.toUpper();
                 name += " : ";
 
-                if(name.contains("ONLINEINFO")) {
+                if(name.startsWith("ONLINE")) {
                     ui->textBrowser_xml->setOpenExternalLinks(true);
                     ui->textBrowser_xml->append(name+"<a href=\"" + elt + "\">" + elt + "</a>"+"\n");
                     ui->textBrowser_xml->append("");
