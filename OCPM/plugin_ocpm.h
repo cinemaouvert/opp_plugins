@@ -90,9 +90,9 @@ public:
      *
      * @author Geoffrey Bergé <geoffrey.berge@live.fr>
      */
-    const QString FICHIERXML = "info.xml";
+    const QString FICHIERXML;
 
-    const QString NAMEMD5 = "onlinesum";
+    const QString NAMEMD5;
 
 
 

@@ -36,7 +36,9 @@
 Q_EXPORT_PLUGIN2(Plugin_Ocpm, Plugin_Ocpm)
 
 Plugin_Ocpm::Plugin_Ocpm(QWidget *parent) :
-    ui(new Ui::Plugin_Ocpm)
+    ui(new Ui::Plugin_Ocpm),
+     FICHIERXML("info.xml"),
+    NAMEMD5("onlinesum")
 {
     ui->setupUi(this);
     ui->treeWidget_information->setHeaderLabel(tr("File : "));
