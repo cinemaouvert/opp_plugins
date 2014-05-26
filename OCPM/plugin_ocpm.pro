@@ -9,7 +9,7 @@ QT += xml
 
 TARGET = plugin_ocpm
 TEMPLATE = lib
-CONFIG			 += debug plugin
+CONFIG += debug plugin
 
 
 SOURCES += \

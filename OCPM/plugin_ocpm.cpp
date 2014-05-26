@@ -218,14 +218,19 @@ void Plugin_Ocpm::setFilename(QString * filename)
 
 void Plugin_Ocpm::on_pushButton_attachment_clicked()
 {
-    QString dir = QFileDialog::getExistingDirectory(this, tr("Set Output Folder"),QDir::homePath());
-    if(!dir.isEmpty()) {
-        int cpt = 0;
-        if(_listItems.count() > 0){
+    int cpt=0;
+    foreach (QTreeWidgetItem *item, _listItems) {
+        if (item->checkState(0) == Qt::Checked) {
+            cpt++;
+        }
+    }
+    if(_listItems.count() > 0 && cpt >0){
+        QString dir = QFileDialog::getExistingDirectory(this, tr("Set Output Folder"),QDir::homePath());
+        if(!dir.isEmpty()) {
+
             foreach (QTreeWidgetItem *item, _listItems) {
                 if (item->checkState(0) == Qt::Checked) {
                     extract(*_filename,0,item->text(0).remove(tr("Attachment ")),dir);
-                    cpt++;
                 }
             }
             if(cpt > 0)
@@ -233,6 +238,8 @@ void Plugin_Ocpm::on_pushButton_attachment_clicked()
             else
                 QMessageBox::information(this, tr("Extracting"),tr("No attachments selected."));
         }
+    }else{
+        QMessageBox::information(this, tr("Extracting"),tr("There is no attachments to extract."));
     }
 
 }
@@ -242,7 +249,7 @@ void Plugin_Ocpm::parceXML() {
 
     QFile file(FICHIERXML);
     if (!file.open(QIODevice::ReadOnly)) {
-        QMessageBox::information(this, tr("File info.xml was not found."),file.errorString());
+        QMessageBox::information(this, tr("File info.xml was not found."),tr("File info.xml was not found."));
     }else{
         QString xml = QString::fromUtf8(file.readAll());
         QStringList listXml = xml.split("\n");
