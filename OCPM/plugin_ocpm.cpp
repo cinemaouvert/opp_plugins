@@ -96,7 +96,6 @@ void Plugin_Ocpm::getInfo(QString path)
         }
     }
 
-    QApplication::restoreOverrideCursor();
 }
 
 void Plugin_Ocpm::parceTracks(const QStringList &outList)
@@ -208,14 +207,15 @@ QString Plugin_Ocpm::getName()
 
 void Plugin_Ocpm::launch()
 {
-    this->show();
     QApplication::setOverrideCursor(Qt::WaitCursor);
+    this->show();
     _listItems.clear();
     if(_filename != NULL){
         if((*_filename).compare("") != 0){
             this->getInfo(*_filename);
         }
     }
+    QApplication::restoreOverrideCursor();
 }
 
 void Plugin_Ocpm::setFilename(QString * filename)
@@ -323,6 +323,7 @@ bool Plugin_Ocpm::checkMd5(QString filename){
         result = true;
         qDebug() << md5toCheck;
     }else{
+        QApplication::restoreOverrideCursor();
         QMessageBox::warning(NULL, tr("Check MD5"), tr("Check MD5 can not possible, check your connection"));
     }
     reply->deleteLater();
