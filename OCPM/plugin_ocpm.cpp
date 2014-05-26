@@ -217,7 +217,6 @@ void Plugin_Ocpm::launch()
     if(_filename != NULL){
         if((*_filename).compare("") != 0){
             this->getInfo(*_filename);
-            _path = *_filename;
         }
     }
 }
@@ -285,7 +284,7 @@ void Plugin_Ocpm::parceXML() {
 
 
             if(name.contains(NAMEMD5)) {
-                _linkMD5 = "http://localhost/OPP/md5.txt";
+                _linkMD5 = elt;
             }
 
             if(name.contains("dc:")) {
