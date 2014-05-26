@@ -87,6 +87,16 @@ void Plugin_Ocpm::getInfo(QString path)
     parceAttach(outList);
 
     parceXML();
+
+    if(_linkMD5 != ""){
+        if(checkMd5(_linkMD5)){
+            ui->label_md5->setText(tr("MD5 valide"));
+        }else{
+            ui->label_md5->setText(tr("MD5 invalide"));
+        }
+    }
+
+    QApplication::restoreOverrideCursor();
     //extract(path,0,QString("2"));
 }
 
@@ -202,6 +212,7 @@ QString Plugin_Ocpm::getName()
 void Plugin_Ocpm::launch()
 {
     this->show();
+    QApplication::setOverrideCursor(Qt::WaitCursor);
     _listItems.clear();
     if(_filename != NULL){
         if((*_filename).compare("") != 0){
@@ -214,6 +225,7 @@ void Plugin_Ocpm::launch()
 void Plugin_Ocpm::setFilename(QString * filename)
 {
     this->_filename = filename;
+    this->_linkMD5 = "";
 }
 
 
@@ -271,10 +283,9 @@ void Plugin_Ocpm::parceXML() {
             pos = name.indexOf('<');
             name = name.right(name.length()-pos-1);
 
-            if(name.contains(NAMEMD5)) {
-                if(checkMd5(elt)){//TODO  :  VERIFER LE MD5--------------------------------------
 
-                }
+            if(name.contains(NAMEMD5)) {
+                _linkMD5 = "http://localhost/OPP/md5.txt";
             }
 
             if(name.contains("dc:")) {
@@ -307,14 +318,14 @@ bool Plugin_Ocpm::checkMd5(QString filename){
     if (reply->error() == QNetworkReply::NoError){
        md5toCheck = reply->readAll();
        result = true;
-
+       qDebug() << md5toCheck;
     }else{
         QMessageBox::warning(NULL, tr("Check MD5"), tr("Check MD5 can not possible, check your connection"));
     }
     reply->deleteLater();
 
     if(result){
-        if(md5File(_path) != md5toCheck){
+        if(md5File(*_filename) != md5toCheck){
             result = false;
         }
     }

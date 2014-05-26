@@ -138,6 +138,11 @@ private :
      */
     QString _path;
 
+    /**
+     *@brief link of file md5
+     */
+    QString _linkMD5;
+
 
 signals:
 
