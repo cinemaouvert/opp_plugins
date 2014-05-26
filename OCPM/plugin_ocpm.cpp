@@ -1,4 +1,4 @@
-/**********************************************************************************
+﻿/**********************************************************************************
  * This file is part of Open Projection Program (OPP).
  *
  * Copyright (C) 2014 Catalogue Ouvert du Cinéma <dev@cinemaouvert.fr>
@@ -37,12 +37,12 @@ Q_EXPORT_PLUGIN2(Plugin_Ocpm, Plugin_Ocpm)
 
 Plugin_Ocpm::Plugin_Ocpm(QWidget *parent) :
     ui(new Ui::Plugin_Ocpm),
-     FICHIERXML("info.xml"),
+    FICHIERXML("info.xml"),
     NAMEMD5("onlinesum")
 {
     ui->setupUi(this);
     ui->treeWidget_information->setHeaderLabel(tr("File : "));
-    ui->textEdit_xml->setReadOnly(1);
+    ui->textBrowser_xml->setReadOnly(1);
 }
 
 Plugin_Ocpm::~Plugin_Ocpm()
@@ -53,7 +53,7 @@ Plugin_Ocpm::~Plugin_Ocpm()
 void Plugin_Ocpm::getInfo(QString path)
 {
     ui->treeWidget_information->clear();
-    ui->textEdit_xml->clear();
+    ui->textBrowser_xml->clear();
 
     int i = path.lastIndexOf(QDir::separator());
     QString title = tr("File : ") + path.right(path.length()-i-1);
@@ -96,8 +96,6 @@ void Plugin_Ocpm::getInfo(QString path)
         }
     }
 
-    QApplication::restoreOverrideCursor();
-    //extract(path,0,QString("2"));
 }
 
 void Plugin_Ocpm::parceTracks(const QStringList &outList)
@@ -200,8 +198,6 @@ void Plugin_Ocpm::extract(QString filepath, int mode, QString id,QString outputN
     process->start("mkvextract",args);
     process->waitForFinished(-1);
     process->close();
-
-    //qDebug() << QString::fromUtf8(process->readAllStandardOutput());
 }
 
 QString Plugin_Ocpm::getName()
@@ -211,14 +207,15 @@ QString Plugin_Ocpm::getName()
 
 void Plugin_Ocpm::launch()
 {
-    this->show();
     QApplication::setOverrideCursor(Qt::WaitCursor);
+    this->show();
     _listItems.clear();
     if(_filename != NULL){
         if((*_filename).compare("") != 0){
             this->getInfo(*_filename);
         }
     }
+    QApplication::restoreOverrideCursor();
 }
 
 void Plugin_Ocpm::setFilename(QString * filename)
@@ -292,7 +289,14 @@ void Plugin_Ocpm::parceXML() {
                 name = name.toUpper();
                 name += " : ";
 
-                ui->textEdit_xml->append(name + elt + "\n");
+                if(name.contains("ONLINEINFO")) {
+                    ui->textBrowser_xml->setOpenExternalLinks(true);
+                    ui->textBrowser_xml->append(name+"<a href=\"" + elt + "\">" + elt + "</a>"+"\n");
+                    ui->textBrowser_xml->append("");
+                }
+                else {
+                    ui->textBrowser_xml->append(name + elt + "\n");
+                }
             }
         }
 
@@ -315,11 +319,13 @@ bool Plugin_Ocpm::checkMd5(QString filename){
     bool result = false;
     QString md5toCheck;
     if (reply->error() == QNetworkReply::NoError){
-       md5toCheck = reply->readAll();
-       result = true;
-       qDebug() << md5toCheck;
+        md5toCheck = reply->readAll();
+        result = true;
+        qDebug() << md5toCheck;
     }else{
         QMessageBox::warning(NULL, tr("Check MD5"), tr("Check MD5 : MD5 file unreachable"));
+        QApplication::restoreOverrideCursor();
+        QMessageBox::warning(NULL, tr("Check MD5"), tr("Check MD5 can not possible, check your connection"));
     }
     reply->deleteLater();
 
