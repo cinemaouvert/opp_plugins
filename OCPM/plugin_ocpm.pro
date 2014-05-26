@@ -15,11 +15,12 @@ SOURCES += \
     plugin_ocpm.cpp
 
 HEADERS  += \
-    plugins.h \
-    plugin_ocpm.h \
-    plugins.h
+    plugin_ocpm.h
 
 FORMS    += \
     plugin_ocpm.ui
 
 DESTDIR			 = ./pluginsOPP
+
+LIBS += -L$$PWD/../lib/ -lopp
+INCLUDEPATH += $$PWD/../include
