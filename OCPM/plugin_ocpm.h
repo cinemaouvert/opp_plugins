@@ -102,7 +102,7 @@ public:
      *
      * @author Denis Saunier <saunier.denis.86@gmail.com>
      */
-    bool checkMd5(QString nameFile);
+    bool checkHash(QString nameFile, bool sha1 = false);
 
     /**
      * @brief get MD5 for a file
@@ -112,6 +112,19 @@ public:
     QString md5File(QString pathFile);
 
     /**
+     * @brief get SHA1 for a file
+     *
+     * @author Denis Saunier <saunier.denis.86@gmail.com>
+     */
+    QString sha1File(QString pathFile);
+
+    /**
+     * @brief get all data for a file
+     *
+     * @author Denis Saunier <saunier.denis.86@gmail.com>
+     */
+    QByteArray readAllFile(QString pathFile);
+    /**
      * @brief FICHIERXML xml file name
      *
      * @author Geoffrey Bergé <geoffrey.berge@live.fr>
@@ -119,6 +132,8 @@ public:
     const QString FICHIERXML;
 
     const QString NAMEMD5;
+
+    const QString NAMESHA1;
 
 
 
@@ -137,6 +152,11 @@ private :
      *@brief link of file md5
      */
     QString _linkMD5;
+
+    /**
+     *@brief link of file sha1
+     */
+    QString _linkSHA1;
 
 
 signals:

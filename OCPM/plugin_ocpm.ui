@@ -37,6 +37,13 @@
         <widget class="QTextBrowser" name="textBrowser_xml"/>
        </item>
        <item>
+        <widget class="QLabel" name="label_sha1">
+         <property name="text">
+          <string/>
+         </property>
+        </widget>
+       </item>
+       <item>
         <widget class="QLabel" name="label_md5">
          <property name="text">
           <string/>

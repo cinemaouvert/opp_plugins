@@ -38,7 +38,8 @@ Q_EXPORT_PLUGIN2(Plugin_Ocpm, Plugin_Ocpm)
 Plugin_Ocpm::Plugin_Ocpm(QWidget *parent) :
     ui(new Ui::Plugin_Ocpm),
     FICHIERXML("info.xml"),
-    NAMEMD5("onlinesum")
+    NAMEMD5("onlinesum"),
+    NAMESHA1("onlinesha1")
 {
     ui->setupUi(this);
     ui->treeWidget_information->setHeaderLabel(tr("File : "));
@@ -89,10 +90,16 @@ void Plugin_Ocpm::getInfo(QString path)
     parceXML();
 
     if(_linkMD5 != ""){
-        if(checkMd5(_linkMD5)){
+        if(checkHash(_linkMD5)){
             ui->label_md5->setText(tr("MD5 valide"));
         }else{
             ui->label_md5->setText(tr("MD5 invalide"));
+        }
+    }else if(_linkSHA1 != ""){
+        if(checkHash(_linkSHA1, true)){
+            ui->label_sha1->setText(tr("SHA1 valide"));
+        }else{
+            ui->label_sha1->setText(tr("SHA1 invalide"));
         }
     }
 
@@ -222,6 +229,7 @@ void Plugin_Ocpm::setFilename(QString * filename)
 {
     this->_filename = filename;
     this->_linkMD5 = "";
+    this->_linkSHA1 = "";
 }
 
 
@@ -284,6 +292,10 @@ void Plugin_Ocpm::parceXML() {
                 _linkMD5 = elt;
             }
 
+            if(name.contains(NAMESHA1)){
+                _linkSHA1 = elt;
+            }
+
             if(name.contains("dc:")) {
                 name.remove("dc:");
                 name = name.toUpper();
@@ -305,7 +317,7 @@ void Plugin_Ocpm::parceXML() {
     }
 }
 
-bool Plugin_Ocpm::checkMd5(QString filename){
+bool Plugin_Ocpm::checkHash(QString filename, bool sha1){
     QNetworkAccessManager manager(this);
 
     QUrl url_version (filename);
@@ -317,11 +329,10 @@ bool Plugin_Ocpm::checkMd5(QString filename){
     loop.exec();
 
     bool result = false;
-    QString md5toCheck;
+    QString hashtoCheck;
     if (reply->error() == QNetworkReply::NoError){
-        md5toCheck = reply->readAll();
+        hashtoCheck = reply->readAll();
         result = true;
-        qDebug() << md5toCheck;
     }else{
         QMessageBox::warning(NULL, tr("Check MD5"), tr("Check MD5 : MD5 file unreachable"));
         QApplication::restoreOverrideCursor();
@@ -329,23 +340,40 @@ bool Plugin_Ocpm::checkMd5(QString filename){
     reply->deleteLater();
 
     if(result){
-        if(md5File(*_filename) != md5toCheck){
-            result = false;
+        if(sha1){
+            if(sha1File(*_filename) != hashtoCheck){
+                result = false;
+            }
+        }else{
+            if(md5File(*_filename) != hashtoCheck){
+                result = false;
+            }
         }
+
     }
     return result;
 }
 
 
-QString Plugin_Ocpm::md5File(QString pathFile){
+QByteArray Plugin_Ocpm::readAllFile(QString pathFile){
     QFile file(pathFile);
     file.open(QIODevice::ReadOnly);
-    QByteArray data = file.readAll();
+    return file.readAll();
+}
 
+
+QString Plugin_Ocpm::md5File(QString pathFile){
     QCryptographicHash md5(QCryptographicHash::Md5);
-    md5.addData(data);
+    md5.addData(readAllFile(pathFile));
 
     QByteArray hah = md5.result();
-    qDebug() << hah.toHex();
+    return hah.toHex();
+}
+
+QString Plugin_Ocpm::sha1File(QString pathFile){
+    QCryptographicHash sha1(QCryptographicHash::Sha1);
+    sha1.addData(readAllFile(pathFile));
+
+    QByteArray hah = sha1.result();
     return hah.toHex();
 }
