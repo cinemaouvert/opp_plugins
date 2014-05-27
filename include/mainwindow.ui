@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1287</width>
-    <height>652</height>
+    <height>727</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -18,7 +18,10 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout_16">
-    <property name="bottomMargin">
+    <property name="spacing">
+     <number>0</number>
+    </property>
+    <property name="margin">
      <number>0</number>
     </property>
     <item>
@@ -34,8 +37,11 @@
         </size>
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_3">
+        <property name="spacing">
+         <number>0</number>
+        </property>
         <property name="margin">
-         <number>1</number>
+         <number>0</number>
         </property>
         <item>
          <widget class="QTabWidget" name="projectTabWidget">
@@ -47,11 +53,17 @@
             <string>Summary</string>
            </attribute>
            <layout class="QVBoxLayout" name="verticalLayout_6">
+            <property name="spacing">
+             <number>2</number>
+            </property>
             <property name="margin">
-             <number>0</number>
+             <number>1</number>
             </property>
             <item>
              <layout class="QHBoxLayout" name="horizontalLayout_8">
+              <property name="spacing">
+               <number>0</number>
+              </property>
               <item alignment="Qt::AlignLeft">
                <widget class="QLabel" name="labelprogEdit">
                 <property name="sizePolicy">
@@ -72,6 +84,9 @@
             </item>
             <item>
              <layout class="QHBoxLayout" name="horizontalLayout_9">
+              <property name="spacing">
+               <number>0</number>
+              </property>
               <item>
                <widget class="QLabel" name="label_3">
                 <property name="text">
@@ -104,6 +119,9 @@
             </item>
             <item>
              <layout class="QHBoxLayout" name="horizontalLayout_10">
+              <property name="spacing">
+               <number>0</number>
+              </property>
               <item>
                <widget class="QLabel" name="label_7">
                 <property name="sizePolicy">
@@ -113,7 +131,7 @@
                  </sizepolicy>
                 </property>
                 <property name="text">
-                 <string>Total projection duration : </string>
+                 <string>Total duration of the automation : </string>
                 </property>
                </widget>
               </item>
@@ -128,6 +146,9 @@
             </item>
             <item>
              <layout class="QVBoxLayout" name="verticalLayout_17">
+              <property name="spacing">
+               <number>0</number>
+              </property>
               <item>
                <widget class="QLabel" name="labelnoteEdit">
                 <property name="sizePolicy">
@@ -166,36 +187,14 @@
             <string>Details</string>
            </attribute>
            <layout class="QVBoxLayout" name="verticalLayout_7">
+            <property name="spacing">
+             <number>0</number>
+            </property>
             <property name="margin">
              <number>0</number>
             </property>
             <item>
-             <widget class="QLabel" name="audiolabel">
-              <property name="text">
-               <string/>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLabel" name="videolabel">
-              <property name="text">
-               <string/>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLabel" name="canauxaudiolabel">
-              <property name="text">
-               <string/>
-              </property>
-             </widget>
-            </item>
-            <item>
-             <widget class="QLabel" name="formatlabel">
-              <property name="text">
-               <string/>
-              </property>
-             </widget>
+             <widget class="QTextEdit" name="textEdit_Codecs"/>
             </item>
            </layout>
           </widget>
@@ -204,6 +203,9 @@
             <string>Log</string>
            </attribute>
            <layout class="QVBoxLayout" name="verticalLayout_8">
+            <property name="spacing">
+             <number>0</number>
+            </property>
             <property name="margin">
              <number>0</number>
             </property>
@@ -232,6 +234,9 @@
            </property>
            <item>
             <layout class="QHBoxLayout" name="horizontalLayout_4">
+             <property name="spacing">
+              <number>0</number>
+             </property>
              <item>
               <widget class="QComboBox" name="schedulePlaylistListComboBox"/>
              </item>
@@ -288,6 +293,9 @@
            </item>
            <item>
             <layout class="QHBoxLayout" name="horizontalLayout_5">
+             <property name="spacing">
+              <number>0</number>
+             </property>
              <item>
               <widget class="QLabel" name="label_delay1">
                <property name="text">
@@ -343,11 +351,17 @@
            <string>Bin</string>
           </property>
           <layout class="QVBoxLayout" name="verticalLayout_4">
+           <property name="spacing">
+            <number>1</number>
+           </property>
            <property name="margin">
             <number>1</number>
            </property>
            <item>
             <layout class="QHBoxLayout" name="horizontalLayout_3">
+             <property name="spacing">
+              <number>0</number>
+             </property>
              <item>
               <widget class="QPushButton" name="binAddMediaButton">
                <property name="text">
@@ -413,50 +427,164 @@
         </size>
        </property>
        <layout class="QVBoxLayout" name="verticalLayout">
+        <property name="spacing">
+         <number>0</number>
+        </property>
         <property name="margin">
-         <number>1</number>
+         <number>0</number>
         </property>
         <item>
          <widget class="QFrame" name="horizontalFrame">
           <layout class="QHBoxLayout" name="horizontalLayout_2">
+           <property name="spacing">
+            <number>0</number>
+           </property>
            <property name="margin">
-            <number>1</number>
+            <number>0</number>
            </property>
            <item>
             <widget class="QFrame" name="verticalFrame_3">
              <layout class="QVBoxLayout" name="verticalLayout_2">
+              <property name="spacing">
+               <number>0</number>
+              </property>
               <property name="margin">
-               <number>1</number>
+               <number>0</number>
               </property>
               <item>
                <widget class="SeekWidget" name="seekWidget" native="true">
-                <layout class="QGridLayout" name="gridLayout"/>
+                <layout class="QGridLayout" name="gridLayout">
+                 <property name="leftMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="topMargin">
+                  <number>5</number>
+                 </property>
+                 <property name="rightMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="spacing">
+                  <number>0</number>
+                 </property>
+                </layout>
                </widget>
               </item>
               <item>
-               <widget class="QWidget" name="mediaSettingsWidget" native="true">
-                <layout class="QHBoxLayout" name="horizontalLayout_7">
-                 <item>
-                  <widget class="QStackedWidget" name="stackedWidget">
-                   <property name="currentIndex">
-                    <number>0</number>
-                   </property>
-                   <widget class="QWidget" name="page_stream">
-                    <widget class="QWidget" name="layoutWidget">
-                     <property name="geometry">
-                      <rect>
-                       <x>0</x>
-                       <y>10</y>
-                       <width>171</width>
-                       <height>181</height>
-                      </rect>
-                     </property>
-                     <layout class="QVBoxLayout" name="verticalLayout_18">
+               <layout class="QHBoxLayout" name="horizontalLayout_12">
+                <property name="spacing">
+                 <number>0</number>
+                </property>
+                <property name="leftMargin">
+                 <number>0</number>
+                </property>
+                <property name="topMargin">
+                 <number>0</number>
+                </property>
+                <item>
+                 <layout class="QGridLayout" name="gridLayout_Before">
+                  <property name="margin">
+                   <number>0</number>
+                  </property>
+                  <property name="spacing">
+                   <number>0</number>
+                  </property>
+                  <item row="0" column="0">
+                   <widget class="QLabel" name="screenBefore">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="maximumSize">
+                     <size>
+                      <width>200</width>
+                      <height>200</height>
+                     </size>
+                    </property>
+                    <property name="frameShape">
+                     <enum>QFrame::Box</enum>
+                    </property>
+                    <property name="text">
+                     <string/>
+                    </property>
+                    <property name="pixmap">
+                     <pixmap resource="../images.qrc">:/icons/resources/images/intertitle.jpg</pixmap>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="1" column="0">
+                   <widget class="QLabel" name="labelBefore">
+                    <property name="frameShape">
+                     <enum>QFrame::NoFrame</enum>
+                    </property>
+                    <property name="text">
+                     <string>00:00:00</string>
+                    </property>
+                    <property name="alignment">
+                     <set>Qt::AlignCenter</set>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+                <item>
+                 <widget class="QStackedWidget" name="stackedWidget">
+                  <property name="sizePolicy">
+                   <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                    <horstretch>0</horstretch>
+                    <verstretch>0</verstretch>
+                   </sizepolicy>
+                  </property>
+                  <property name="maximumSize">
+                   <size>
+                    <width>250</width>
+                    <height>250</height>
+                   </size>
+                  </property>
+                  <property name="currentIndex">
+                   <number>1</number>
+                  </property>
+                  <widget class="QWidget" name="page_stream">
+                   <layout class="QHBoxLayout" name="horizontalLayout_13">
+                    <item>
+                     <layout class="QVBoxLayout" name="verticalLayout_stream">
+                      <property name="spacing">
+                       <number>0</number>
+                      </property>
                       <item>
-                       <widget class="VideoWidget" name="backWidget" native="true"/>
+                       <widget class="VideoWidget" name="backWidget" native="true">
+                        <property name="sizePolicy">
+                         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                          <horstretch>0</horstretch>
+                          <verstretch>0</verstretch>
+                         </sizepolicy>
+                        </property>
+                        <property name="maximumSize">
+                         <size>
+                          <width>200</width>
+                          <height>173</height>
+                         </size>
+                        </property>
+                       </widget>
                       </item>
                       <item>
                        <widget class="QPushButton" name="disableButton">
+                        <property name="sizePolicy">
+                         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                          <horstretch>0</horstretch>
+                          <verstretch>0</verstretch>
+                         </sizepolicy>
+                        </property>
+                        <property name="maximumSize">
+                         <size>
+                          <width>200</width>
+                          <height>27</height>
+                         </size>
+                        </property>
                         <property name="text">
                          <string>Disable</string>
                         </property>
@@ -469,30 +597,185 @@
                         </property>
                        </widget>
                       </item>
+                      <item>
+                       <widget class="QLabel" name="label_stream">
+                        <property name="text">
+                         <string>00:00:00</string>
+                        </property>
+                        <property name="alignment">
+                         <set>Qt::AlignCenter</set>
+                        </property>
+                       </widget>
+                      </item>
                      </layout>
-                    </widget>
-                   </widget>
-                   <widget class="QWidget" name="page_screen">
-                    <widget class="QLabel" name="screenBack">
-                     <property name="geometry">
-                      <rect>
-                       <x>0</x>
-                       <y>20</y>
-                       <width>221</width>
-                       <height>181</height>
-                      </rect>
-                     </property>
-                     <property name="text">
-                      <string/>
-                     </property>
-                     <property name="pixmap">
-                      <pixmap resource="../images.qrc">:/icons/resources/images/intertitle.jpg</pixmap>
-                     </property>
-                    </widget>
-                   </widget>
-                   <widget class="QWidget" name="page_none"/>
+                    </item>
+                   </layout>
                   </widget>
-                 </item>
+                  <widget class="QWidget" name="page_screen">
+                   <layout class="QHBoxLayout" name="horizontalLayout_14">
+                    <item>
+                     <layout class="QGridLayout" name="gridLayout_screen">
+                      <property name="leftMargin">
+                       <number>0</number>
+                      </property>
+                      <property name="spacing">
+                       <number>0</number>
+                      </property>
+                      <item row="0" column="0">
+                       <widget class="QLabel" name="screenBack">
+                        <property name="sizePolicy">
+                         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                          <horstretch>0</horstretch>
+                          <verstretch>0</verstretch>
+                         </sizepolicy>
+                        </property>
+                        <property name="minimumSize">
+                         <size>
+                          <width>0</width>
+                          <height>0</height>
+                         </size>
+                        </property>
+                        <property name="maximumSize">
+                         <size>
+                          <width>200</width>
+                          <height>200</height>
+                         </size>
+                        </property>
+                        <property name="frameShape">
+                         <enum>QFrame::Box</enum>
+                        </property>
+                        <property name="text">
+                         <string/>
+                        </property>
+                        <property name="pixmap">
+                         <pixmap resource="../images.qrc">:/icons/resources/images/intertitle.jpg</pixmap>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="1" column="0">
+                       <widget class="QLabel" name="label_screen">
+                        <property name="text">
+                         <string>00:00:00</string>
+                        </property>
+                        <property name="alignment">
+                         <set>Qt::AlignCenter</set>
+                        </property>
+                       </widget>
+                      </item>
+                     </layout>
+                    </item>
+                   </layout>
+                  </widget>
+                  <widget class="QWidget" name="page_none">
+                   <layout class="QHBoxLayout" name="horizontalLayout_15">
+                    <item>
+                     <layout class="QGridLayout" name="gridLayout_none">
+                      <property name="spacing">
+                       <number>0</number>
+                      </property>
+                      <item row="0" column="0">
+                       <widget class="QLabel" name="screen_none">
+                        <property name="sizePolicy">
+                         <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                          <horstretch>0</horstretch>
+                          <verstretch>0</verstretch>
+                         </sizepolicy>
+                        </property>
+                        <property name="maximumSize">
+                         <size>
+                          <width>200</width>
+                          <height>200</height>
+                         </size>
+                        </property>
+                        <property name="frameShape">
+                         <enum>QFrame::Box</enum>
+                        </property>
+                        <property name="text">
+                         <string/>
+                        </property>
+                        <property name="pixmap">
+                         <pixmap resource="../images.qrc">:/icons/resources/images/intertitle.jpg</pixmap>
+                        </property>
+                       </widget>
+                      </item>
+                      <item row="1" column="0">
+                       <widget class="QLabel" name="label_none">
+                        <property name="frameShape">
+                         <enum>QFrame::NoFrame</enum>
+                        </property>
+                        <property name="text">
+                         <string>00:00:00</string>
+                        </property>
+                        <property name="alignment">
+                         <set>Qt::AlignCenter</set>
+                        </property>
+                       </widget>
+                      </item>
+                     </layout>
+                    </item>
+                   </layout>
+                  </widget>
+                 </widget>
+                </item>
+                <item>
+                 <layout class="QGridLayout" name="gridLayout_After">
+                  <property name="margin">
+                   <number>0</number>
+                  </property>
+                  <property name="spacing">
+                   <number>0</number>
+                  </property>
+                  <item row="1" column="0">
+                   <widget class="QLabel" name="labelAfter">
+                    <property name="frameShape">
+                     <enum>QFrame::NoFrame</enum>
+                    </property>
+                    <property name="text">
+                     <string>00:00:00</string>
+                    </property>
+                    <property name="alignment">
+                     <set>Qt::AlignCenter</set>
+                    </property>
+                   </widget>
+                  </item>
+                  <item row="0" column="0">
+                   <widget class="QLabel" name="screenAfter">
+                    <property name="sizePolicy">
+                     <sizepolicy hsizetype="Expanding" vsizetype="Expanding">
+                      <horstretch>0</horstretch>
+                      <verstretch>0</verstretch>
+                     </sizepolicy>
+                    </property>
+                    <property name="maximumSize">
+                     <size>
+                      <width>200</width>
+                      <height>200</height>
+                     </size>
+                    </property>
+                    <property name="frameShape">
+                     <enum>QFrame::Box</enum>
+                    </property>
+                    <property name="text">
+                     <string/>
+                    </property>
+                    <property name="pixmap">
+                     <pixmap resource="../images.qrc">:/icons/resources/images/intertitle.jpg</pixmap>
+                    </property>
+                   </widget>
+                  </item>
+                 </layout>
+                </item>
+               </layout>
+              </item>
+              <item>
+               <widget class="QWidget" name="mediaSettingsWidget" native="true">
+                <layout class="QHBoxLayout" name="horizontalLayout_7">
+                 <property name="spacing">
+                  <number>0</number>
+                 </property>
+                 <property name="margin">
+                  <number>0</number>
+                 </property>
                  <item>
                   <widget class="QFrame" name="frame">
                    <property name="frameShape">
@@ -502,8 +785,11 @@
                     <enum>QFrame::Raised</enum>
                    </property>
                    <layout class="QVBoxLayout" name="verticalLayout_10">
-                    <property name="margin">
+                    <property name="spacing">
                      <number>0</number>
+                    </property>
+                    <property name="margin">
+                     <number>1</number>
                     </property>
                     <item>
                      <widget class="QGroupBox" name="groupBox_3">
@@ -521,10 +807,10 @@
                       </property>
                       <layout class="QVBoxLayout" name="verticalLayout_11">
                        <property name="spacing">
-                        <number>2</number>
+                        <number>0</number>
                        </property>
                        <property name="margin">
-                        <number>2</number>
+                        <number>0</number>
                        </property>
                        <item>
                         <layout class="QFormLayout" name="formLayout_4">
@@ -535,10 +821,10 @@
                           <set>Qt::AlignHCenter|Qt::AlignTop</set>
                          </property>
                          <property name="horizontalSpacing">
-                          <number>2</number>
+                          <number>0</number>
                          </property>
                          <property name="verticalSpacing">
-                          <number>2</number>
+                          <number>0</number>
                          </property>
                          <item row="0" column="0">
                           <widget class="QLabel" name="audioTrackLabel">
@@ -550,7 +836,7 @@
                          <item row="0" column="1">
                           <widget class="QComboBox" name="audioTrackComboBox">
                            <property name="sizePolicy">
-                            <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
+                            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
                              <horstretch>0</horstretch>
                              <verstretch>0</verstretch>
                             </sizepolicy>
@@ -565,29 +851,12 @@
                           </widget>
                          </item>
                          <item row="1" column="1">
-                          <widget class="QComboBox" name="videoTrackComboBox"/>
-                         </item>
-                         <item row="2" column="0">
-                          <widget class="QLabel" name="subtitlesTrackLabel">
-                           <property name="text">
-                            <string>Subtitles track</string>
-                           </property>
-                          </widget>
-                         </item>
-                         <item row="2" column="1">
-                          <widget class="QComboBox" name="subtitlesTrackComboBox"/>
-                         </item>
-                         <item row="3" column="0">
-                          <widget class="QLabel" name="subtitlesSyncLabel">
-                           <property name="text">
-                            <string>Subtitles sync</string>
-                           </property>
-                          </widget>
-                         </item>
-                         <item row="3" column="1">
-                          <widget class="QDoubleSpinBox" name="subtitlesSyncSpinBox">
-                           <property name="minimum">
-                            <double>-99.900000000000006</double>
+                          <widget class="QComboBox" name="videoTrackComboBox">
+                           <property name="sizePolicy">
+                            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                             <horstretch>0</horstretch>
+                             <verstretch>0</verstretch>
+                            </sizepolicy>
                            </property>
                           </widget>
                          </item>
@@ -599,7 +868,57 @@
                           </widget>
                          </item>
                          <item row="4" column="1">
-                          <widget class="QComboBox" name="ratioComboBox"/>
+                          <widget class="QComboBox" name="ratioComboBox">
+                           <property name="sizePolicy">
+                            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                             <horstretch>0</horstretch>
+                             <verstretch>0</verstretch>
+                            </sizepolicy>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="7" column="0">
+                          <widget class="QLabel" name="audioSyncLabel">
+                           <property name="text">
+                            <string>Audio sync</string>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="5" column="0">
+                          <widget class="QLabel" name="audioGainLabel">
+                           <property name="text">
+                            <string>Audio gain</string>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="5" column="1">
+                          <widget class="QDoubleSpinBox" name="audioGainDoubleSpinBox">
+                           <property name="sizePolicy">
+                            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                             <horstretch>0</horstretch>
+                             <verstretch>0</verstretch>
+                            </sizepolicy>
+                           </property>
+                           <property name="maximum">
+                            <double>3.010000000000000</double>
+                           </property>
+                           <property name="singleStep">
+                            <double>0.010000000000000</double>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="7" column="1">
+                          <widget class="QDoubleSpinBox" name="audioSyncDoubleSpinBox">
+                           <property name="sizePolicy">
+                            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                             <horstretch>0</horstretch>
+                             <verstretch>0</verstretch>
+                            </sizepolicy>
+                           </property>
+                           <property name="minimum">
+                            <double>-99.989999999999995</double>
+                           </property>
+                          </widget>
                          </item>
                         </layout>
                        </item>
@@ -618,8 +937,11 @@
                     <enum>QFrame::Raised</enum>
                    </property>
                    <layout class="QVBoxLayout" name="verticalLayout_12">
-                    <property name="margin">
+                    <property name="spacing">
                      <number>0</number>
+                    </property>
+                    <property name="margin">
+                     <number>1</number>
                     </property>
                     <item>
                      <widget class="QGroupBox" name="groupBox_4">
@@ -634,10 +956,10 @@
                       </property>
                       <layout class="QVBoxLayout" name="verticalLayout_13" stretch="0">
                        <property name="spacing">
-                        <number>2</number>
+                        <number>0</number>
                        </property>
                        <property name="margin">
-                        <number>2</number>
+                        <number>0</number>
                        </property>
                        <item>
                         <layout class="QFormLayout" name="formLayout">
@@ -645,22 +967,15 @@
                           <set>Qt::AlignHCenter|Qt::AlignTop</set>
                          </property>
                          <property name="horizontalSpacing">
-                          <number>2</number>
+                          <number>0</number>
                          </property>
                          <property name="verticalSpacing">
-                          <number>2</number>
+                          <number>0</number>
                          </property>
                          <item row="0" column="0">
                           <widget class="QLabel" name="gammaLabel">
                            <property name="text">
                             <string>Gamma</string>
-                           </property>
-                          </widget>
-                         </item>
-                         <item row="1" column="0">
-                          <widget class="QLabel" name="contrastLabel">
-                           <property name="text">
-                            <string> Contrast</string>
                            </property>
                           </widget>
                          </item>
@@ -688,7 +1003,7 @@
                          <item row="4" column="1">
                           <widget class="QSpinBox" name="hueSpinBox">
                            <property name="sizePolicy">
-                            <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+                            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
                              <horstretch>0</horstretch>
                              <verstretch>0</verstretch>
                             </sizepolicy>
@@ -704,7 +1019,7 @@
                          <item row="0" column="1">
                           <widget class="QDoubleSpinBox" name="gammaSpinBox">
                            <property name="sizePolicy">
-                            <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+                            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
                              <horstretch>0</horstretch>
                              <verstretch>0</verstretch>
                             </sizepolicy>
@@ -720,7 +1035,7 @@
                          <item row="1" column="1">
                           <widget class="QDoubleSpinBox" name="contrastSpinBox">
                            <property name="sizePolicy">
-                            <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+                            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
                              <horstretch>0</horstretch>
                              <verstretch>0</verstretch>
                             </sizepolicy>
@@ -736,7 +1051,7 @@
                          <item row="2" column="1">
                           <widget class="QDoubleSpinBox" name="brightnessSpinBox">
                            <property name="sizePolicy">
-                            <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+                            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
                              <horstretch>0</horstretch>
                              <verstretch>0</verstretch>
                             </sizepolicy>
@@ -752,7 +1067,7 @@
                          <item row="3" column="1">
                           <widget class="QDoubleSpinBox" name="saturationSpinBox">
                            <property name="sizePolicy">
-                            <sizepolicy hsizetype="Maximum" vsizetype="Fixed">
+                            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
                              <horstretch>0</horstretch>
                              <verstretch>0</verstretch>
                             </sizepolicy>
@@ -762,6 +1077,13 @@
                            </property>
                            <property name="singleStep">
                             <double>0.100000000000000</double>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="1" column="0">
+                          <widget class="QLabel" name="contrastLabel">
+                           <property name="text">
+                            <string>Contrast</string>
                            </property>
                           </widget>
                          </item>
@@ -782,8 +1104,11 @@
                     <enum>QFrame::Raised</enum>
                    </property>
                    <layout class="QVBoxLayout" name="verticalLayout_14">
-                    <property name="margin">
+                    <property name="spacing">
                      <number>0</number>
+                    </property>
+                    <property name="margin">
+                     <number>1</number>
                     </property>
                     <item>
                      <widget class="QGroupBox" name="groupBox_5">
@@ -794,14 +1119,14 @@
                        </sizepolicy>
                       </property>
                       <property name="title">
-                       <string>Sound</string>
+                       <string>Subtitle</string>
                       </property>
                       <layout class="QVBoxLayout" name="verticalLayout_15">
                        <property name="spacing">
-                        <number>2</number>
+                        <number>0</number>
                        </property>
                        <property name="margin">
-                        <number>2</number>
+                        <number>0</number>
                        </property>
                        <item>
                         <layout class="QFormLayout" name="formLayout_2">
@@ -812,41 +1137,57 @@
                           <set>Qt::AlignHCenter|Qt::AlignTop</set>
                          </property>
                          <property name="horizontalSpacing">
-                          <number>2</number>
+                          <number>0</number>
                          </property>
                          <property name="verticalSpacing">
-                          <number>2</number>
+                          <number>0</number>
                          </property>
-                         <item row="0" column="0">
-                          <widget class="QLabel" name="audioSyncLabel">
-                           <property name="text">
-                            <string>Audio sync</string>
+                         <item row="2" column="1">
+                          <widget class="QComboBox" name="subtitlesTrackComboBox">
+                           <property name="sizePolicy">
+                            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                             <horstretch>0</horstretch>
+                             <verstretch>0</verstretch>
+                            </sizepolicy>
                            </property>
                           </widget>
                          </item>
-                         <item row="0" column="1">
-                          <widget class="QDoubleSpinBox" name="audioSyncDoubleSpinBox">
+                         <item row="2" column="0">
+                          <widget class="QLabel" name="subtitlesTrackLabel">
+                           <property name="text">
+                            <string>Subtitles track</string>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="3" column="0">
+                          <widget class="QLabel" name="subtitlesSyncLabel">
+                           <property name="text">
+                            <string>Subtitles sync</string>
+                           </property>
+                          </widget>
+                         </item>
+                         <item row="3" column="1">
+                          <widget class="QDoubleSpinBox" name="subtitlesSyncSpinBox">
+                           <property name="sizePolicy">
+                            <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+                             <horstretch>0</horstretch>
+                             <verstretch>0</verstretch>
+                            </sizepolicy>
+                           </property>
                            <property name="minimum">
-                            <double>-99.989999999999995</double>
+                            <double>-99.900000000000006</double>
                            </property>
                           </widget>
                          </item>
-                         <item row="1" column="0">
-                          <widget class="QLabel" name="audioGainLabel">
+                         <item row="5" column="0">
+                          <widget class="QLabel" name="label_SubtiltesEncode">
                            <property name="text">
-                            <string>Audio gain</string>
+                            <string>Subtitles encode</string>
                            </property>
                           </widget>
                          </item>
-                         <item row="1" column="1">
-                          <widget class="QDoubleSpinBox" name="audioGainDoubleSpinBox">
-                           <property name="maximum">
-                            <double>3.010000000000000</double>
-                           </property>
-                           <property name="singleStep">
-                            <double>0.010000000000000</double>
-                           </property>
-                          </widget>
+                         <item row="5" column="1">
+                          <widget class="QComboBox" name="subtitlesEncodecomboBox"/>
                          </item>
                         </layout>
                        </item>
@@ -867,6 +1208,12 @@
         </item>
         <item>
          <layout class="QHBoxLayout" name="horizontalLayout_11">
+          <property name="spacing">
+           <number>0</number>
+          </property>
+          <property name="margin">
+           <number>1</number>
+          </property>
           <item>
            <widget class="QPushButton" name="advancedSettingsButton">
             <property name="text">
@@ -908,6 +1255,12 @@
         </item>
         <item>
          <layout class="QHBoxLayout" name="horizontalLayout">
+          <property name="spacing">
+           <number>0</number>
+          </property>
+          <property name="margin">
+           <number>1</number>
+          </property>
           <item>
            <widget class="QTabWidget" name="playlistsTabWidget">
             <property name="currentIndex">
@@ -923,6 +1276,12 @@
           </item>
           <item>
            <layout class="QVBoxLayout" name="verticalLayout_9">
+            <property name="spacing">
+             <number>0</number>
+            </property>
+            <property name="margin">
+             <number>1</number>
+            </property>
             <item>
              <widget class="QPushButton" name="addPlaylistButton">
               <property name="sizePolicy">
@@ -1076,6 +1435,9 @@
            </sizepolicy>
           </property>
           <layout class="QHBoxLayout" name="horizontalLayout_6">
+           <property name="spacing">
+            <number>0</number>
+           </property>
            <property name="margin">
             <number>0</number>
            </property>
@@ -1476,7 +1838,7 @@
   </action>
   <action name="updateAction">
    <property name="enabled">
-    <bool>false</bool>
+    <bool>true</bool>
    </property>
    <property name="text">
     <string>Update</string>

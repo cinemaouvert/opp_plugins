@@ -61,7 +61,7 @@ class Media : public QObject
     Q_OBJECT
 public:
     Media(const QString &location, libvlc_instance_t *vlcInstance, QObject *parent = 0, bool isFile = true);
-    Media(const Media &media);
+    Media(Media *media);
     virtual ~Media();
 
     /**
@@ -203,12 +203,28 @@ public:
     bool isImage() const;
 
     /**
+     * @brief Media is an sound
+     * @return True if media file is an sound, false otherwise
+     *
+     * @author Thomas Berthome <thoberthome@laposte.net>
+     */
+    bool isAudio() const;
+
+    /**
      * @brief Add `count` to tell the media is used
      * @param count The number to add
      *
      * @author Florian Mhun <florian.mhun@gmail.com>
      */
     void usageCountAdd(int count = 1);
+
+    /**
+     * @brief Getter for the usageCount
+     *
+     * @author Thibaud Lamarche <lamarchethibaud@hotmail.fr>
+     */
+    int usageCount(){ return this->_usageCount; }
+
 
     /**
      * @brief Media is used or not
@@ -277,6 +293,15 @@ public:
      * @author Thibaud Lamarche <lamarchethibaud@hotmail.fr>
      */
     QString getLocation();
+
+    /**
+      * @brief used to decremented original media count
+      *
+      * @author Thibaud Lamarche <lamarchethibaud@hotmail.fr>
+      */
+    void remove();
+
+
 protected:
 
     /**
@@ -295,6 +320,12 @@ signals:
     void usageCountChanged();
 
 private:
+
+    /**
+      * @brief instance de vlc
+      */
+    libvlc_instance_t* _instance;
+
     /**
      * @brief The number of created instances, used to set a unique identifier for each instance.
      */
@@ -349,6 +380,11 @@ private:
      * @brief Original duration of media.
      */
     uint _originalDuration;
+
+    /**
+      * @brief link to the original Media
+      */
+    Media *_original;
 };
 
 #endif // MEDIA_H

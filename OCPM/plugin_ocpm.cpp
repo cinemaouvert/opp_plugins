@@ -39,7 +39,9 @@ Plugin_Ocpm::Plugin_Ocpm(QWidget *parent) :
     ui(new Ui::Plugin_Ocpm),
     FICHIERXML("info.xml"),
     NAMEMD5("onlinesum"),
-    NAMESHA1("onlinesha1")
+    NAMESHA1("onlinesha1"),
+    REFERENCE_IMAGE("image_reference.png"),
+    _idReferenceImage(-1)
 {
     ui->setupUi(this);
     ui->treeWidget_information->setHeaderLabel(tr("File : "));
@@ -51,7 +53,7 @@ Plugin_Ocpm::~Plugin_Ocpm()
     delete ui;
 }
 
-void Plugin_Ocpm::getInfo(QString path)
+void Plugin_Ocpm::getInfo(QString path, bool init)
 {
     ui->treeWidget_information->clear();
     ui->textBrowser_xml->clear();
@@ -84,22 +86,28 @@ void Plugin_Ocpm::getInfo(QString path)
         proc.close();
     }
 
-    parceTracks(outList);
+    if(init){
+        parceTracks(outList);
+
+    }
+
     parceAttach(outList);
 
-    parceXML();
+    if(init){
+        parceXML();
 
-    if(_linkMD5 != ""){
-        if(checkHash(_linkMD5)){
-            ui->label_md5->setText(tr("MD5 valide"));
-        }else{
-            ui->label_md5->setText(tr("MD5 invalide"));
-        }
-    }else if(_linkSHA1 != ""){
-        if(checkHash(_linkSHA1, true)){
-            ui->label_sha1->setText(tr("SHA1 valide"));
-        }else{
-            ui->label_sha1->setText(tr("SHA1 invalide"));
+        if(_linkMD5 != ""){
+            if(checkHash(_linkMD5)){
+                ui->label_md5->setText(tr("MD5 valide"));
+            }else{
+                ui->label_md5->setText(tr("MD5 invalide"));
+            }
+        }else if(_linkSHA1 != ""){
+            if(checkHash(_linkSHA1, true)){
+                ui->label_sha1->setText(tr("SHA1 valide"));
+            }else{
+                ui->label_sha1->setText(tr("SHA1 invalide"));
+            }
         }
     }
 
@@ -169,6 +177,8 @@ void Plugin_Ocpm::parceAttach(const QStringList &outList)
 
                 if(tempStr.contains(FICHIERXML)) {
                     extract(*_filename,0,QString::number(nb));
+                }else if(tempStr.contains(REFERENCE_IMAGE)){
+                    _idReferenceImage=(nb);
                 }
                 track->addChild(param);
                 i++;
@@ -205,6 +215,7 @@ void Plugin_Ocpm::extract(QString filepath, int mode, QString id,QString outputN
     process->start("mkvextract",args);
     process->waitForFinished(-1);
     process->close();
+
 }
 
 QString Plugin_Ocpm::getName()
@@ -355,6 +366,9 @@ bool Plugin_Ocpm::checkHash(QString filename, bool sha1){
 }
 
 
+
+
+
 QByteArray Plugin_Ocpm::readAllFile(QString pathFile){
     QFile file(pathFile);
     file.open(QIODevice::ReadOnly);
@@ -376,4 +390,23 @@ QString Plugin_Ocpm::sha1File(QString pathFile){
 
     QByteArray hah = sha1.result();
     return hah.toHex();
+}
+
+bool Plugin_Ocpm::extractReferenceImage(){
+    if(_idReferenceImage != -1 ){
+        QString path = QString::number(_idReferenceImage)+":./screenshot/";
+        path.replace("/",QDir::separator());
+        QString tmpFilename = *_filename;
+        path += tmpFilename.replace(QDir::separator(),"_");
+        path += ".png";
+
+        extract(*_filename,0,path);
+        return true;
+    }
+    return false;
+}
+
+void Plugin_Ocpm::secondaryAction(){
+    getInfo(*_filename,false);
+    extractReferenceImage();
 }

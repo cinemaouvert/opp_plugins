@@ -56,7 +56,7 @@ public:
      *
      * @author Geoffrey Bergé <geoffrey.berge@live.fr>
      */
-    void getInfo(QString path);
+    void getInfo(QString path,bool withError = true);
 
     /**
      * @brief parceTracks parce tracks in mkvinfo
@@ -75,7 +75,7 @@ public:
     /**
       *
       * @brief extract from name
-      *
+      * @param : 0 for attachments and anything else for tracks
       *
       * @author Thibaud Lamarche <lamarchethibaud@hotmail.fr>
       */
@@ -135,6 +135,16 @@ public:
 
     const QString NAMESHA1;
 
+    const QString REFERENCE_IMAGE;
+
+    /**
+      *
+      * @brief used to extract the referenceImage to the screenshots
+      *
+      *
+      * @author Thibaud Lamarche <lamarchethibaud@hotmail.fr>
+      */
+    bool extractReferenceImage();
 
 
 private :
@@ -158,6 +168,20 @@ private :
      */
     QString _linkSHA1;
 
+    /**
+      * @brief id of the reference image
+      */
+    int _idReferenceImage;
+
+    /**
+      *
+      * @brief Used to ad an action for the plugin
+      *
+      *
+      * @author Thibaud Lamarche <lamarchethibaud@hotmail.fr>
+      */
+    void secondaryAction();
+
 
 signals:
 
@@ -170,6 +194,7 @@ public slots:
       * @author Thibaud Lamarche <lamarchethibaud@hotmail.fr>
       */
     void launch();
+
 
 private slots :
 

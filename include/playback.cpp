@@ -29,7 +29,8 @@
 Playback::Playback(Media *media, QObject *parent) :
     QObject(parent)
 {
-    _media = media;
+    _media = new Media(media);
+
     _mediaSettings = new MediaSettings();
 
     if (_media->videoTracks().count() > 0)
@@ -44,4 +45,6 @@ Playback::Playback(Media *media, QObject *parent) :
 Playback::~Playback()
 {
     delete _mediaSettings;
+    _media->remove();
+    delete _media;
 }

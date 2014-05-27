@@ -33,6 +33,8 @@
 #include "utils.h"
 
 #include <QDebug>
+#include <QMessageBox>
+#include <QDir>
 
 OCPM_Plugin::OCPM_Plugin(QWidget *parent) :
     QDialog(parent),
@@ -59,8 +61,9 @@ void OCPM_Plugin::setPlayback(Playback* playback)
 
     /*Setting in and out mark*/
     QTime timeIn = msecToQTime(_playback->mediaSettings()->inMark());
-    ui->timeEdit_inMark->setTime(timeIn);
     QTime timeOut = msecToQTime(_playback->mediaSettings()->outMark());
+
+    ui->timeEdit_inMark->setTime(timeIn);
     ui->timeEdit_inMark->setMaximumTime(msecToQTime(_playback->media()->getOriginalDuration()));
     ui->timeEdit_outMark->setMaximumTime(msecToQTime(_playback->media()->getOriginalDuration()));
 
@@ -78,7 +81,7 @@ void OCPM_Plugin::setPlayback(Playback* playback)
     /*Modified length*/
     updateLength();
 
-    ui->comboBox_testPattern->setCurrentIndex(_playback->mediaSettings()->testPattern());
+    //ui->comboBox_testPattern->setCurrentIndex(_playback->mediaSettings()->testPattern());
 
 
     /*Fill table*/
@@ -145,47 +148,66 @@ void OCPM_Plugin::setPlayback(Playback* playback)
         ui->label_outMark->setVisible(true);
     }
 
+
+    if(!_playback->media()->isAudio() && !_playback->media()->isImage()){
+        QPixmap pixmap;
+        QString path = "./screenshot/";
+        path = path.replace("/",QDir::separator());
+        path +=  _playback->media()->getLocation().replace(QDir::separator(),"_");
+        path += ".png";
+        pixmap.load((path.toStdString().c_str()));
+
+        ui->label_picture->setPixmap(pixmap.scaled( QSize(400,400), Qt::KeepAspectRatio, Qt::FastTransformation));
+    }else{
+        ui->label_picture->clear();
+    }
 }
 
 void OCPM_Plugin::on_buttonBox_OKCancel_accepted()
 {
     /*Test pattern*/
-    int index = ui->comboBox_testPattern->currentIndex();
-    if (index == -1)
-        return;
-    _playback->mediaSettings()->setTestPattern(index==0);
+    //int index = ui->comboBox_testPattern->currentIndex();
+    // if (index == -1)
+    //    return;
+    //_playback->mediaSettings()->setTestPattern(index==0);
 
     /*In mark and out mark*/
-    _playback->mediaSettings()->setInMark(qTimeToMsec(ui->timeEdit_inMark->time()));
-    uint timeIn = _playback->mediaSettings()->inMark();
-    char* optionIn = (QString(":start-time=") + QString::number(timeIn / 1000)).toLocal8Bit().data();
-    libvlc_media_add_option(_playback->media()->core(),optionIn);
+    uint timeIn = qTimeToMsec(ui->timeEdit_inMark->time());
+    uint timeOut = qTimeToMsec(ui->timeEdit_outMark->time());
 
-    _playback->mediaSettings()->setOutMark(qTimeToMsec(ui->timeEdit_outMark->time()));
-    uint timeOut = _playback->mediaSettings()->outMark();
-    char* optionOut = (QString(":stop-time=") + QString::number(timeOut / 1000)).toLocal8Bit().data();
-    libvlc_media_add_option(_playback->media()->core(),optionOut);
-
-
-    uint diff;
+    int diff;
     if(_playback->media()->isImage()){
         int secOut = ui->imageDurationTimeEdit->time().second()+60*ui->imageDurationTimeEdit->time().minute()+3600*ui->imageDurationTimeEdit->time().hour();
         diff = 1000*(secOut);
-        _playback->media()->setImageTime(QString::number(diff/1000));
+        if(diff > 0){
+            _playback->media()->setImageTime(QString::number(diff/1000));
+        }
     }else{
-
-        _playback->mediaSettings()->setInMark(timeIn);
-        _playback->mediaSettings()->setOutMark(timeOut);
-
         diff = timeOut - timeIn;
+        if(diff > 0){
+            _playback->mediaSettings()->setInMark(qTimeToMsec(ui->timeEdit_inMark->time()));
+            _playback->mediaSettings()->setOutMark(qTimeToMsec(ui->timeEdit_outMark->time()));
+
+
+            char* optionIn = (QString(":start-time=") + QString::number(timeIn / 1000)).toLocal8Bit().data();
+            libvlc_media_add_option(_playback->media()->core(),optionIn);
+            char* optionOut = (QString(":stop-time=") + QString::number(timeOut / 1000)).toLocal8Bit().data();
+            libvlc_media_add_option(_playback->media()->core(),optionOut);
+
+
+            _playback->mediaSettings()->setInMark(timeIn);
+            _playback->mediaSettings()->setOutMark(timeOut);
+        }
     }
     QString duration;
-    if(diff != 0){
+    if(diff > 0 && timeIn > 0 ){
         duration = QString::number(diff);
         _playback->media()->setDuration(duration);
-    }else{
+    }else if(diff>0){
         duration = QString::number(timeOut);
         _playback->media()->setDuration(duration);
+    }else{
+        QMessageBox::warning(NULL, tr("Negative time"), tr("Start time is lower or equals to Stop time.") , tr("Ok"));
     }
     this->hide();
 }
