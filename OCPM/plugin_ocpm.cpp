@@ -176,7 +176,7 @@ void Plugin_Ocpm::parceAttach(const QStringList &outList)
                 QTreeWidgetItem* param = new QTreeWidgetItem(*l);
 
                 if(tempStr.contains(FICHIERXML)) {
-                    extract(*_filename,0,QString::number(nb));
+                    extract(*_filename,0,QString::number(nb),QDir::tempPath());
                 }else if(tempStr.contains(REFERENCE_IMAGE)){
                     _idReferenceImage=(nb);
                 }
@@ -211,9 +211,11 @@ void Plugin_Ocpm::extract(QString filepath, int mode, QString id,QString outputN
 
     args<<modeStr<<filepath<<id;
 
+
     process->setWorkingDirectory(outputName);
     process->start("mkvextract",args);
     process->waitForFinished(-1);
+    qDebug() << process->readAll();
     process->close();
 
 }
@@ -276,7 +278,8 @@ void Plugin_Ocpm::on_pushButton_attachment_clicked()
 void Plugin_Ocpm::parceXML() {
 
 
-    QFile file(FICHIERXML);
+    QFile file(QDir::tempPath() + "/" +FICHIERXML);
+    qDebug() << QDir::tempPath() + "/" +FICHIERXML;
     if (!file.open(QIODevice::ReadOnly)) {
         QMessageBox::information(this, tr("File info.xml was not found."),tr("File info.xml was not found."));
     }else{
@@ -397,7 +400,7 @@ bool Plugin_Ocpm::extractReferenceImage(){
         QString path = QString::number(_idReferenceImage)+":./screenshot/";
         path.replace("/",QDir::separator());
         QString tmpFilename = *_filename;
-        path += tmpFilename.replace(QDir::separator(),"_");
+        path += tmpFilename.replace(QDir::separator(),"_").replace(":", "");
         path += ".png";
 
         extract(*_filename,0,path);
