@@ -1,0 +1,45 @@
+
+
+	**** GENERAL ****
+	Pour l'instant le programme est composé de deux classes principales, la classe Info et la classe AbstractProvider.
+	La classe Info fournis l'objet d'interface qui sera manipulé par les fournisseurs et qui fournira aux autres
+	élément du programmes les informations sur la hardware, la classe AbstractProvider fournis la classe de base
+	permettant de créer les classes des fournisseurs.
+
+	
+	**** CREATION D'UN FOURNISSEUR ****
+	Pour créer un fournisseur, il suffit de créer une classe héritant publiquement d'Info et d'AbstractProvider.
+	Il y a obligation de définir la methode virtuelle pure "provide()" qui devient la méthode principale du fournisseur.
+	Il faut définir la méthode "provide" dans une portée "protected". La méthode "provide" est utilisée par "Info".
+	Afin que le fournisseur nourrisse l'objet instancié de type "Info", on doit utiliser la méthode "fetch".
+
+	
+	**** METHODE FETCH DE INFO ****
+	La méthode "fetch" de la classe "Info" permet aux objets instanciés de type "Info" de lancer le fournisseur
+	qui leur est attribué. Le fournisseur vas, via les fonctions héritée de "Info", changer les attributs statiques de la classe,
+	puis, la méthode "fetch" va faire une copie des variable statique de la classe après changement, dans les attributs de l'instance.
+	L'utilisation de cette technique permet d'offrir la possibilitée d'avoir plusieurs objet de type "Info" qui conservent les données
+	à différent moment du fonctionnement de la machine.
+		
+		=> Peut être pourrons nous imaginer par la suite la création d'un historique de la machine. En tout cas nous pourrons
+		envisagé une implémentation plus subtil de la fonctionnalité de "print" de l'état de la machine. 
+
+		
+	**** WINDOWS ****
+	
+		=> Si l'erreur "0x80010106" est rencontrée, c'est que la librairie COM est déjà initialisée par "QApplication".
+		
+		
+	**** BIBLIOTHEQUES UTILISEES ****
+	FOURNISSEURS:
+		Pour chaque fournisseur on utilise la bibliothèque standard et, si besoin, des biliothèques propres
+		au système d'exploitation pour lequel est écrit le fournisseur.
+		
+	INFO:
+		Pour l'objet "Info" contenant les informations, on n'utilise que la bibliothèque standard.
+		
+	GUI:
+		Pour l'interface graphique on utilise pour l'instant Qt5.
+		
+	DIAGNOSTIQUE:
+		Rien n'est déterminé pour l'instant.
